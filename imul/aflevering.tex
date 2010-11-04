@@ -4,6 +4,11 @@
 \usepackage{amsmath,amssymb}
 \usepackage{listings}
 
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0.1in}
+
+\newcommand{\imul}{\texttt{imul}}
+
 \begin{document}
 \title{dComNet Uge 1 Aflevering}
 \author{Mathias Rav \\
@@ -12,28 +17,30 @@
 \date{November 2010}
 \maketitle
 
-\section{Multiplikation i IJVM}
-Hvis vi kører programmet imul med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
+<<<<<<< HEAD
+\section{Multiplikation med \imul-metoden}
+Hvis vi kører programmet \imul{} med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
 
 Som det kan ses fra stack-tracen:
 
-IJVM Trace of imul.bc Thu Nov  4 20:57:23 2010
+IJVM Trace of \texttt{imul.bc} Thu Nov  4 20:57:23 2010
 
-\begin{tabular}{lll}
-                  &           & stack = 0, 1, 16 \\
-bipush 44         & [10 2c]   & stack = 44, 0, 1, 16 \\
-bipush -1         & [10 ff]   & stack = -1, 44, 0, 1, 16 \\
-bipush 5          & [10 05]   & stack = 5, -1, 44, 0, 1, 16 \\
-invokevirtual 0   & [b6 00 00]& stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
-bipush 0          & [10 00]   & stack = 0, 15, 51, 0, 5, -1, 22, 0 \\
-istore 3          & [36 03]   & stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
-iload 1           & [15 01]   & stack = -1, 15, 51, 0, 5, -1, 22, 0 \\
-iflt 25           & [9b 00 19]& stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
-iload 3           & [15 03]   & stack = 0, 15, 51, 0, 5, -1, 22, 0 \\
-ireturn           & [ac]      & stack = 0, 0, 1, 16 \\
-ireturn           & [ac]      & stack = 0 \\
-return value: 0
+\begin{tabular}{llllllllll}
+                &                    & stack = 0,& 1,& 16 \\
+bipush 44       & \texttt{[10 2c]   }& stack = 44,& 0,& 1,& 16 \\
+bipush -1       & \texttt{[10 ff]   }& stack = -1,& 44,& 0,& 1,& 16 \\
+bipush 5        & \texttt{[10 05]   }& stack = 5,& -1,& 44,& 0,& 1,& 16 \\
+invokevirtual 0 & \texttt{[b6 00 00]}& stack = 15,& 51,& 0,& 5,& -1,& 22,& 0,& 1 \\
+bipush 0        & \texttt{[10 00]   }& stack = 0,& 15,& 51,& 0,& 5,& -1,& 22,& 0 \\
+istore 3        & \texttt{[36 03]   }& stack = 15,& 51,& 0,& 5,& -1,& 22,& 0,& 1 \\
+iload 1         & \texttt{[15 01]   }& stack = -1,& 15,& 51,& 0,& 5,& -1,& 22,& 0 \\
+iflt 25         & \texttt{[9b 00 19]}& stack = 15,& 51,& 0,& 5,& -1,& 22,& 0,& 1 \\
+iload 3         & \texttt{[15 03]   }& stack = 0,& 15,& 51,& 0,& 5,& -1,& 22,& 0 \\
+ireturn         & \texttt{[ac]      }& stack = 0,& 0,& 1,& 16 \\
+ireturn         & \texttt{[ac]      }& stack = 0
 \end{tabular}
+
+return value: $0$
 
 \subsection{Bevis at resultatet er korrekt når x er positiv og y er negativ.}
 \paragraph{Basis}
