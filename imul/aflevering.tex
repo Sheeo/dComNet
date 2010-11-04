@@ -17,7 +17,25 @@
 \date{November 2010}
 \maketitle
 
-\section{Multiplikation med \imul-metoden}
+\section{Multiplikation med \imul{}-metoden, i C}
+Hvis man kører \imul{}-metoden med parametrene $x=2$ og $y=-4$, får man $-8$.
+
+Programmet vil altid multiplicere korrekt når $x$ er positiv, da addition/subtraktion er defineret for alle heltal.
+Dog er programmets while-løkke ikke defineret så der kan itereres over $x$ i positiv retning.
+Derfor vil programmet give 0, hvis $x$ er negativ.
+
+\subsection{Induktionsbevis for, at resultatet altid er korrekt når x er positiv og y er negativ}
+
+Om funktionen $f(x, y, p) = f(x-1, y, p+y)$, $f(0, y, p) = p$ antager vi, at $f(x, y, p) = xy+p$ gælder.
+\paragraph{Basis} $x = 0$
+$f(0, y, p) = p$, ved definitionen
+\paragraph{Induktion på x}
+Antag at $f(x-1, y, p) = (x-1)y+p$
+så er $f(x, y, p) = f(x-1, y, p+y) = (x-1)y+p+y = xy+p$
+
+
+
+\section{Multiplikation med \imul{}-programmet, i IJVM}
 Hvis vi kører programmet \imul{} med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
 
 Som det kan ses fra stack-tracen:
@@ -40,6 +58,7 @@ ireturn         & \texttt{[ac]      }& stack = 0
 \end{tabular}
 
 return value: $0$
+
 
 
 \end{document}
