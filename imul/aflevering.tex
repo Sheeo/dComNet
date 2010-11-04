@@ -16,23 +16,23 @@ Hvis vi kører programmet imul med parametrene $x=-1$ og $y=5$, får vi resultat
 
 Som det kan ses fra stack-tracen:
 
-\begin{lstlisting}
 IJVM Trace of imul.bc Thu Nov  4 20:57:23 2010
 
-                                stack = 0, 1, 16
-bipush 44           [10 2c]     stack = 44, 0, 1, 16
-bipush -1           [10 ff]     stack = -1, 44, 0, 1, 16
-bipush 5            [10 05]     stack = 5, -1, 44, 0, 1, 16
-invokevirtual 0     [b6 00 00]  stack = 15, 51, 0, 5, -1, 22, 0, 1
-bipush 0            [10 00]     stack = 0, 15, 51, 0, 5, -1, 22, 0
-istore 3            [36 03]     stack = 15, 51, 0, 5, -1, 22, 0, 1
-iload 1             [15 01]     stack = -1, 15, 51, 0, 5, -1, 22, 0
-iflt 25             [9b 00 19]  stack = 15, 51, 0, 5, -1, 22, 0, 1
-iload 3             [15 03]     stack = 0, 15, 51, 0, 5, -1, 22, 0
-ireturn             [ac]        stack = 0, 0, 1, 16
-ireturn             [ac]        stack = 0
+\begin{tabular}{lll}
+                  &           & stack = 0, 1, 16 \\
+bipush 44         & [10 2c]   & stack = 44, 0, 1, 16 \\
+bipush -1         & [10 ff]   & stack = -1, 44, 0, 1, 16 \\
+bipush 5          & [10 05]   & stack = 5, -1, 44, 0, 1, 16 \\
+invokevirtual 0   & [b6 00 00]& stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
+bipush 0          & [10 00]   & stack = 0, 15, 51, 0, 5, -1, 22, 0 \\
+istore 3          & [36 03]   & stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
+iload 1           & [15 01]   & stack = -1, 15, 51, 0, 5, -1, 22, 0 \\
+iflt 25           & [9b 00 19]& stack = 15, 51, 0, 5, -1, 22, 0, 1 \\
+iload 3           & [15 03]   & stack = 0, 15, 51, 0, 5, -1, 22, 0 \\
+ireturn           & [ac]      & stack = 0, 0, 1, 16 \\
+ireturn           & [ac]      & stack = 0 \\
 return value: 0
-\end{lstlisting}
+\end{tabular}
 
 
 \end{document}
