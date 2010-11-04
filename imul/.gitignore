@@ -5,3 +5,4 @@ imul.trace
 *.dvi
 *.aux
 *.pdf
+*.log
