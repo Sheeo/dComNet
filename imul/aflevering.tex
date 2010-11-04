@@ -1,13 +1,15 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{listings}
 
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
 
 \newcommand{\imul}{\texttt{imul}}
+
+\newtheorem{theorem}{Sætning}
 
 \begin{document}
 \title{dComNet Uge 1 Aflevering}
@@ -20,11 +22,39 @@
 \section{Multiplikation med \imul{}-metoden, i C}
 Hvis man kører \imul{}-metoden med parametrene $x=2$ og $y=-4$, får man $-8$.
 
-Programmet vil altid multiplicere korrekt når $x$ er positiv, da addition/subtraktion er defineret for alle heltal.
-Dog er programmets while-løkke ikke defineret så der kan itereres over $x$ i positiv retning.
-Derfor vil programmet give 0, hvis $x$ er negativ.
+Programmet vil altid multiplicere korrekt når $x$ er positiv, da
+addition/subtraktion er defineret for alle heltal, sådan som det sker i
+kodelinjen \texttt{p = p + y}. Hvis $y$ er negativ, så vil $p$ blive mindre.
 
-\subsection{Induktionsbevis for, at resultatet altid er korrekt når x er positiv og y er negativ}
+Den anden operand, $x$, indgår dog i while-løkkens betingelse: \texttt{while (
+x > 0 )}. Hvis $x$ ikke er positiv, så vil løkken ikke blive udført, og
+resultatet af funktionen vil være $0$.
+
+Rent matematisk har funktionen $imul$ en state, der er givet ved tuplen
+$(x,y,p)$. Så længe $x$ er positiv, vil kroppen af while-løkken ændre staten af
+funktionen: $x$ bliver en mindre, og $y$ bliver lagt til $p$. Dette fortsætter
+indtil $x$ er mindre end eller lig med $0$, hvor resultatet af funktionen er
+$p$. Det kan beskrives ved en funktion såsom
+\[\delta(x,y,p)=\left\{\begin{array}{cc}
+	\delta(x-1,y,p+y) & \text{hvis }x>0 \\
+	p & \text{hvis }x\leq 0
+\end{array}\right.\]
+
+\begin{theorem}
+	For $x,y,p\in\mathbb{Z},x\leq0$ er $\delta(x,y,p)=xy+p$.
+\end{theorem}
+
+\begin{proof}
+	Vi beviser sætningen ved induktion på $x$.
+	\paragraph{Basis $x=0$} Ved definitionen af $\delta$ gælder netop $\delta(0,y,p)=p=0\cdot y+p$.
+	\paragraph{Induktion} Antag, at $\delta(x-1,y,p)=(x-1)y+p$. Så er $\delta(x,y,p)=\delta(x-1,y,p+y)=(x-1)y+p+y=xy+p$. \qedhere
+\end{proof}
+
+Af induktionsbeviset fremgår det, at $\delta(x,y,p)=xy+p$. Da variablen $p$ er
+lokal i funktionen og initialiseret til $0$, må resultatet ved kørsel af
+C-funktionen $\texttt{imul(int x, int y)}$ være $\delta(x,y,0)=xy$.
+
+\subsection{Positiv $x$, negativ $y$}
 
 Om funktionen $f(x, y, p) = f(x-1, y, p+y)$, $f(0, y, p) = p$ antager vi, at $f(x, y, p) = xy+p$ gælder.
 \paragraph{Basis} $x = 0$
