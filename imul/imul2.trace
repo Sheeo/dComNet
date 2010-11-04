@@ -1,0 +1,44 @@
+IJVM Trace of imul.bc Thu Nov  4 22:50:58 2010
+
+                                stack = 0, 1, 16
+bipush 44           [10 2c]     stack = 44, 0, 1, 16
+bipush 2            [10 02]     stack = 2, 44, 0, 1, 16
+bipush 3            [10 03]     stack = 3, 2, 44, 0, 1, 16
+invokevirtual 0     [b6 00 00]  stack = 15, 51, 0, 3, 2, 22, 0, 1
+bipush 0            [10 00]     stack = 0, 15, 51, 0, 3, 2, 22, 0
+istore 3            [36 03]     stack = 15, 51, 0, 3, 2, 22, 0, 1
+iload 1             [15 01]     stack = 2, 15, 51, 0, 3, 2, 22, 0
+iflt 25             [9b 00 19]  stack = 15, 51, 0, 3, 2, 22, 0, 1
+iload 1             [15 01]     stack = 2, 15, 51, 0, 3, 2, 22, 0
+ifeq 20             [99 00 14]  stack = 15, 51, 0, 3, 2, 22, 0, 1
+iload 1             [15 01]     stack = 2, 15, 51, 0, 3, 2, 22, 0
+bipush 1            [10 01]     stack = 1, 2, 15, 51, 0, 3, 2, 22
+isub                [64]        stack = 1, 15, 51, 0, 3, 2, 22, 0
+istore 1            [36 01]     stack = 15, 51, 0, 3, 1, 22, 0, 1
+iload 3             [15 03]     stack = 0, 15, 51, 0, 3, 1, 22, 0
+iload 2             [15 02]     stack = 3, 0, 15, 51, 0, 3, 1, 22
+iadd                [60]        stack = 3, 15, 51, 0, 3, 1, 22, 0
+istore 3            [36 03]     stack = 15, 51, 3, 3, 1, 22, 0, 1
+goto -24            [a7 ff e8]  stack = 15, 51, 3, 3, 1, 22, 0, 1
+iload 1             [15 01]     stack = 1, 15, 51, 3, 3, 1, 22, 0
+iflt 25             [9b 00 19]  stack = 15, 51, 3, 3, 1, 22, 0, 1
+iload 1             [15 01]     stack = 1, 15, 51, 3, 3, 1, 22, 0
+ifeq 20             [99 00 14]  stack = 15, 51, 3, 3, 1, 22, 0, 1
+iload 1             [15 01]     stack = 1, 15, 51, 3, 3, 1, 22, 0
+bipush 1            [10 01]     stack = 1, 1, 15, 51, 3, 3, 1, 22
+isub                [64]        stack = 0, 15, 51, 3, 3, 1, 22, 0
+istore 1            [36 01]     stack = 15, 51, 3, 3, 0, 22, 0, 1
+iload 3             [15 03]     stack = 3, 15, 51, 3, 3, 0, 22, 0
+iload 2             [15 02]     stack = 3, 3, 15, 51, 3, 3, 0, 22
+iadd                [60]        stack = 6, 15, 51, 3, 3, 0, 22, 0
+istore 3            [36 03]     stack = 15, 51, 6, 3, 0, 22, 0, 1
+goto -24            [a7 ff e8]  stack = 15, 51, 6, 3, 0, 22, 0, 1
+iload 1             [15 01]     stack = 0, 15, 51, 6, 3, 0, 22, 0
+iflt 25             [9b 00 19]  stack = 15, 51, 6, 3, 0, 22, 0, 1
+iload 1             [15 01]     stack = 0, 15, 51, 6, 3, 0, 22, 0
+ifeq 20             [99 00 14]  stack = 15, 51, 6, 3, 0, 22, 0, 1
+iload 3             [15 03]     stack = 6, 15, 51, 6, 3, 0, 22, 0
+ireturn             [ac]        stack = 6, 0, 1, 16
+ireturn             [ac]        stack = 6
+return value: 6
+
