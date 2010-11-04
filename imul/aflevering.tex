@@ -12,7 +12,7 @@
 \date{November 2010}
 \maketitle
 
-\section{Multiplikation med imul-metoden}
+\section{Multiplikation i IJVM}
 Hvis vi kører programmet imul med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
 
 Som det kan ses fra stack-tracen:
@@ -34,5 +34,12 @@ ireturn           & [ac]      & stack = 0, 0, 1, 16 \\
 ireturn           & [ac]      & stack = 0 \\
 return value: 0
 \end{tabular}
+
+\subsection{Bevis at resultatet er korrekt når x er positiv og y er negativ.}
+\paragraph{Basis}
+for $x \rightarrow 0$ \\
+	$r = x + y$
+
+
 
 \end{document}
