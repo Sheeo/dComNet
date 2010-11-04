@@ -62,8 +62,8 @@ return value: $0$
 
 Hvis vi kører programmet med parametrene $x=2$ og $y=3$, får vi resultatet $6$
 
-Som det kan ses fra stack-tracen i filen "imul2.trace", så er stakket størst, efter instruktionen \texttt{invokevirtual 0 [b6 00 00]}. Den har en størrelse på $8$.
+Som det kan ses fra stack-tracen i filen "imul2.trace", så er stakken størst, efter instruktionen \texttt{invokevirtual 0 [b6 00 00]}. Den har en størrelse på $8$.
 
-Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da der ved tal større end 127, skal bruges flere registre for, at lagre x og y.
+Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da der ved tal større end 127, skal bruges flere registre for, at lagre x og y. (Programmet fungerer ikke, ved tal udenfor denne range.)
 
 \end{document}
