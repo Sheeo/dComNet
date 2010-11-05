@@ -1,5 +1,5 @@
 #!/bin/sh
-cat > imul.j <<J
+ijvm-asm > gen/imul.bc <<J
 // Integer multiplication.
   
 .method imul
@@ -40,4 +40,5 @@ end_while:
 	invokevirtual imul	
 	ireturn			// return imul(2,3);
 J
-# vim:ts=8:
+ijvm gen/imul.bc
+# vim:ts=8:sw=8:sts=8:

@@ -6,3 +6,4 @@ imul.trace
 *.aux
 *.pdf
 *.log
+gen
