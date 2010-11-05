@@ -96,4 +96,35 @@ Som det kan ses fra stack-tracen i filen "imul2.trace", så er stakken størst, 
 
 Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da programmet ikke kan eksekveres med værdier uden for dette domæne.
 
+\subsection{Antallet af instruktioner ved kørsel af \imul{}}
+Ved kørsel af \imul{} med $x=0$ og $y=0$, er anstaller af instruktioner der bliver udført $14$.
+
+Hvis man kører programmet med en hvilken som helst anden værdi af $y$, vil antallet af instruktioner være det samme.
+
+Hvis man dog kører med $x=1$, bliver antallet af instruktioner $17$. Ved $x=2$, bliver det $30$. Ved $x=50$ bliver det $664$.
+
+Følgende tabel, viser antallet af instruktioner ved de givne x-værdier. Disse er fundet ved at køre et hjælpe-shellscript, som vi har skrevet: \texttt{sh repl.sh}, og skrive x ned fra 0-4 og 50. Derefter ses linjeantallet i stacktracen. Linjeantallet -3 giver antallet af instruktioner, som er blevet udført.
+
+\begin{tabular}{|l|l|}
+\hline
+x  & Instruktioner \\ \hline
+0  & 14  \\ \hline
+1  & 27  \\ \hline
+2  & 40  \\ \hline
+3  & 53  \\ \hline
+4  & 66  \\ \hline
+50 & 664 \\ \hline
+
+\end{tabular}
+
+Fra tabellen, kan man se et mønster, beskrevet ved følgende afhængighed:
+
+\[
+	i = 13x + 14
+\]
+
+Dette skyldes, at for hvergang x bliver en større, skal der udføres 13 ekstra instruktioner, for at addere x og y.
+
+For at mindske antallet af instruktioner, kan man TODO: optimér imul.
+
 \end{document}
