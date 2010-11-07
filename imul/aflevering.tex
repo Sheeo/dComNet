@@ -11,30 +11,38 @@
 
 \newtheorem{theorem}{Sætning}
 
-\begin{document}
-\title{dComNet Uge 1 Aflevering}
-\author{Mathias Rav \\
-		Michael Søndergaard \\
+\title{Computere og Netværk (Q2/2010)}
+\author{Mathias Rav, 20103940 \\
+		Michael Søndergaard, 20104223 \\
 		DAT-3}
-\date{November 2010}
+\date{Uge 1, 7.\ november 2010}
+
+\begin{document}
 \maketitle
 
-\section{Multiplikation med \imul-metoden, i C}
-Hvis man kører \imul-metoden med parametrene $x=2$ og $y=-4$, får man $-8$.
+\section{Multiplikation med \texttt{imul.c}}
+Kørsel af programmet \texttt{imul.c} gav:
+
+$\text{imul}(2,3) = 6.$
+
+Ved kørsel med en negativ værdi for $x$ fås resultatet $0$.  $x$, den første
+operand til \imul, indgår nemlig i while-løkkens betingelse: \texttt{while ( x
+> 0 )}. Hvis $x$ ikke er positiv, så vil løkken ikke blive udført, og
+resultatet af funktionen vil være $0$, selvom $xy\ne0$.
+
+En kørsel med $x=2$ og $y=-4$ gav:
+
+$\text{imul}(2,-4) = -8.$
 
 Programmet vil altid multiplicere korrekt når $x$ er positiv, da
 addition/subtraktion er defineret for alle heltal, sådan som det sker i
-kodelinjen \texttt{p = p + y}. Hvis $y$ er negativ, så vil $p$ blive mindre.
-
-Den anden operand til \imul, $x$, indgår dog i while-løkkens betingelse:
-\texttt{while ( x > 0 )}. Hvis $x$ ikke er positiv, så vil løkken ikke blive
-udført, og resultatet af funktionen vil være $0$, selvom $xy\ne0$.
+kodelinjen \texttt{p = p + y}.  Hvis $y$ er negativ, så vil $p$ blive mindre.
 
 Rent matematisk har funktionen \imul{} en state, der er givet ved tuplen
-$(x,y,p)$. Så længe $x$ er positiv, vil kroppen af while-løkken ændre staten af
-funktionen: $x$ bliver \'en mindre, og $y$ bliver lagt til $p$. Dette fortsætter
-indtil $x$ er mindre end eller lig med $0$, hvor resultatet af funktionen er
-$p$. Det kan beskrives ved en funktion såsom
+$(x,y,p)$. Så længe $x>0$ vil kroppen af while-løkken ændre staten af
+funktionen: $x$ bliver \'en mindre, og $y$ bliver lagt til $p$. Dette
+fortsætter indtil $x$ er mindre end eller lig med $0$, hvor resultatet af
+funktionen er $p$. Det kan beskrives ved en funktion såsom
 \[\delta(x,y,p)=\left\{\begin{array}{cc}
 	\delta(x-1,y,p+y) & \text{hvis }x>0 \\
 	p & \text{hvis }x\leq 0
@@ -47,14 +55,72 @@ $p$. Det kan beskrives ved en funktion såsom
 \begin{proof}
 	Vi beviser sætningen ved induktion på $x$.
 	\paragraph{Basis $x=0$} Ved definitionen af $\delta$ gælder netop $\delta(0,y,p)=p=0\cdot y+p$.
-	\paragraph{Induktion} Antag, at $\delta(x-1,y,p)=(x-1)y+p$. Så er $\delta(x,y,p)=\delta(x-1,y,p+y)=(x-1)y+p+y=xy+p$. \qedhere
+	\paragraph{Induktion} Antag, at $\delta(x-1,y,p)=(x-1)y+p$. Så er
+	\begin{align*}
+		\delta(x,y,p)&=\delta(x-1,y,p+y) \\
+		&=(x-1)y+p+y \\
+		&=xy+p. \qedhere{}
+	\end{align*}
 \end{proof}
 
 Af induktionsbeviset fremgår det, at $\delta(x,y,p)=xy+p$. Da variablen $p$ er
 lokal i funktionen og initialiseret til $0$, må resultatet ved kørsel af
 C-funktionen $\texttt{imul(int x, int y)}$ for positiv $x$ og vilkårlig $y$
 være $\delta(x,y,0)=xy$.
+\clearpage
 \section{Multiplikation med \imul{}-programmet, i IJVM}
+En kørsel af programmet imul.j ser således ud:
+
+IJVM Trace of gen/imul.bc Sun Nov  7 15:08:28 2010
+
+\begin{tabular}{llllllllll}
+                    &                    & stack = 0,& 1,& 16 \\
+bipush 44           &\texttt{[10 2c]    }& stack = 44,& 0,& 1,& 16 \\
+bipush 2            &\texttt{[10 02]    }& stack = 2,& 44,& 0,& 1,& 16 \\
+bipush 3            &\texttt{[10 03]    }& stack = 3,& 2,& 44,& 0,& 1,& 16 \\
+invokevirtual 0     &\texttt{[b6 00 00] }& stack = 15,& 51,& 0,& 3,& 2,& 22,& 0,& 1 \\
+bipush 0            &\texttt{[10 00]    }& stack = 0,& 15,& 51,& 0,& 3,& 2,& 22,& 0 \\
+istore 3            &\texttt{[36 03]    }& stack = 15,& 51,& 0,& 3,& 2,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 2,& 15,& 51,& 0,& 3,& 2,& 22,& 0 \\
+iflt 25             &\texttt{[9b 00 19] }& stack = 15,& 51,& 0,& 3,& 2,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 2,& 15,& 51,& 0,& 3,& 2,& 22,& 0 \\
+ifeq 20             &\texttt{[99 00 14] }& stack = 15,& 51,& 0,& 3,& 2,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 2,& 15,& 51,& 0,& 3,& 2,& 22,& 0 \\
+bipush 1            &\texttt{[10 01]    }& stack = 1,& 2,& 15,& 51,& 0,& 3,& 2,& 22 \\
+isub                &\texttt{[64]       }& stack = 1,& 15,& 51,& 0,& 3,& 2,& 22,& 0 \\
+istore 1            &\texttt{[36 01]    }& stack = 15,& 51,& 0,& 3,& 1,& 22,& 0,& 1 \\
+iload 3             &\texttt{[15 03]    }& stack = 0,& 15,& 51,& 0,& 3,& 1,& 22,& 0 \\
+iload 2             &\texttt{[15 02]    }& stack = 3,& 0,& 15,& 51,& 0,& 3,& 1,& 22 \\
+iadd                &\texttt{[60]       }& stack = 3,& 15,& 51,& 0,& 3,& 1,& 22,& 0 \\
+istore 3            &\texttt{[36 03]    }& stack = 15,& 51,& 3,& 3,& 1,& 22,& 0,& 1 \\
+goto -24            &\texttt{[a7 ff e8] }& stack = 15,& 51,& 3,& 3,& 1,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 1,& 15,& 51,& 3,& 3,& 1,& 22,& 0 \\
+iflt 25             &\texttt{[9b 00 19] }& stack = 15,& 51,& 3,& 3,& 1,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 1,& 15,& 51,& 3,& 3,& 1,& 22,& 0 \\
+ifeq 20             &\texttt{[99 00 14] }& stack = 15,& 51,& 3,& 3,& 1,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 1,& 15,& 51,& 3,& 3,& 1,& 22,& 0 \\
+bipush 1            &\texttt{[10 01]    }& stack = 1,& 1,& 15,& 51,& 3,& 3,& 1,& 22 \\
+isub                &\texttt{[64]       }& stack = 0,& 15,& 51,& 3,& 3,& 1,& 22,& 0 \\
+istore 1            &\texttt{[36 01]    }& stack = 15,& 51,& 3,& 3,& 0,& 22,& 0,& 1 \\
+iload 3             &\texttt{[15 03]    }& stack = 3,& 15,& 51,& 3,& 3,& 0,& 22,& 0 \\
+iload 2             &\texttt{[15 02]    }& stack = 3,& 3,& 15,& 51,& 3,& 3,& 0,& 22 \\
+iadd                &\texttt{[60]       }& stack = 6,& 15,& 51,& 3,& 3,& 0,& 22,& 0 \\
+istore 3            &\texttt{[36 03]    }& stack = 15,& 51,& 6,& 3,& 0,& 22,& 0,& 1 \\
+\end{tabular}
+\clearpage
+\begin{tabular}{llllllllll}
+goto -24            &\texttt{[a7 ff e8] }& stack = 15,& 51,& 6,& 3,& 0,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 0,& 15,& 51,& 6,& 3,& 0,& 22,& 0 \\
+iflt 25             &\texttt{[9b 00 19] }& stack = 15,& 51,& 6,& 3,& 0,& 22,& 0,& 1 \\
+iload 1             &\texttt{[15 01]    }& stack = 0,& 15,& 51,& 6,& 3,& 0,& 22,& 0 \\
+ifeq 20             &\texttt{[99 00 14] }& stack = 15,& 51,& 6,& 3,& 0,& 22,& 0,& 1 \\
+iload 3             &\texttt{[15 03]    }& stack = 6,& 15,& 51,& 6,& 3,& 0,& 22,& 0 \\
+ireturn             &\texttt{[ac]       }& stack = 6,& 0,& 1,& 16 \\
+ireturn             &\texttt{[ac]       }& stack = 6
+\end{tabular}
+
+return value: 6
+
 Hvis vi kører programmet \imul{} med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
 
 Det fremgår af stack-tracen:
