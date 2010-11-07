@@ -152,7 +152,9 @@ Som det kan ses fra stack-tracen i filen "imul2.trace", så er stakken størst, 
 Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da programmet ikke kan eksekveres med værdier uden for dette domæne. Dog ville stakken skulle være større, hvis man gav x og y tilpas store værdier, som ville kræve at man skal lagre dem i flere registre.
 
 \subsection{Antallet af instruktioner ved kørsel af \imul{}}
-Ved kørsel af \imul{} med $x=0$ og $y=0$, er anstallet af instruktioner der bliver udført $14$. Hvis man kører programmet med en hvilken som helst anden værdi af $y$, vil antallet af instruktioner være det samme. Det vil sige, at antallet af instruktioner afhænger af x.
+Antal instruktioner udført afhænger af den aktuelle værdi af x.
+
+Ved kørsel af \imul{} med $x=0$ og $y=0$, er anstallet af instruktioner der bliver udført $14$. Hvis man kører programmet med en hvilken som helst anden værdi af $y$, vil antallet af instruktioner være det samme.
 
 For hver gang x bliver en større, skal der udføres 13 ekstra instruktioner. Dette svarer til det antal instruktioner, som findes i \imul{}s \texttt{while} sektion. Samtidig er det mindste antal instruktioner der kan udføres, 14.
 
