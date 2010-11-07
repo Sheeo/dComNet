@@ -121,7 +121,14 @@ ireturn             &\texttt{[ac]       }& stack = 6
 
 return value: 6
 
-Stakkens maksimale størrelse er $11$.
+Trace-outputtet ovenfor, viser kun de øverste 8 elementer af stakken. Dette er
+vildledende, da man ved optælling får den korrekte maksimale stakstørrelse til
+11. Denne størrelse optræder i while-løkken, når vi foretager aritmetik: Første
+gang når vi skal udregne $x-1$, og anden gang når vi skal udregne $p+y$.
+
+Stakkens maksimale størrelse er den samme uanset input. Det gør ingen forskel,
+hvor mange gange kroppen af løkken udføres, da denne så at sige rydder op efter
+sig selv i stakken.
 
 Efter ordren \texttt{invokevirtual imul} ser stakken således ud:
 
@@ -159,15 +166,6 @@ programtæller, 51, peger på den sidste instruktion i programmet, som
 efterfølger kaldet til \texttt{invokevirtual} i \texttt{main}: \texttt{ac}
 (\texttt{ireturn}).
 
-Trace-outputtet ovenfor, viser kun de øverste 8 elementer af stakken. Dette er vildledende
-da man ved optælling får den korrekte maksimale stack-størrelse, som er 11. Denne
-størrelse optræder i while-løkken, når vi foretager binær aritmetik: Første
-gang når vi skal udregne $x-1$, og anden gang når vi skal udregne $p+y$.
-
-Stakkens maksimale størrelse er den samme uanset input. Det gør ingen forskel,
-hvor mange gange kroppen af løkken udføres, da denne så at sige rydder op efter
-sig selv, hvad angår stakken.
-
 \subsection{Antal ordre udført}
 Antallet af ordre udført er konstant med henhold til $y$. Der bliver ikke lavet
 nogen sammenligninger, der involverer $y$ - den bliver bare lagt til en
@@ -186,14 +184,13 @@ ved kørsel af \imul{} med forskellige parametre:
 
 \begin{tabular}{|c|c|c|}
 \hline
-x & y & Instruktioner \\ \hline
-0 & 2 & 14  \\ \hline
-1 & 1 & 27  \\ \hline
-2 & 3 & 40  \\ \hline
-3 & 5 & 53  \\ \hline
-4 & 4 & 66  \\ \hline
-50& 1 & 664 \\ \hline
-
+$x$ & $y$ & Instruktioner \\ \hline
+ 0  & 2  &  14 \\ \hline
+ 1  & 1  &  27 \\ \hline
+ 2  & 3  &  40 \\ \hline
+ 3  & 5  &  53 \\ \hline
+ 4  & 4  &  66 \\ \hline
+50  & 1  & 664 \\ \hline
 \end{tabular}
 
 Disse data stemmer netop overens med vores model.
