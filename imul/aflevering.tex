@@ -167,20 +167,19 @@ Stakkens maksimale størrelse er den samme uanset input. Det gør ingen forskel,
 hvor mange gange kroppen af løkken udføres, da denne så at sige rydder op efter
 sig selv, hvad angår stakken.
 
-\subsection{Antallet af instruktioner ved kørsel af \imul{}}
-Antal instruktioner udført afhænger af den aktuelle værdi af x.
+\subsection{Antal ordre udført}
+Antallet af ordre udført er konstant med henhold til $y$. Der bliver ikke lavet
+nogen sammenligninger, der involverer $y$ - den bliver bare lagt til en
+midlertidig variabel. Derimod afhænger antallet af ordre udført af $x$.
 
-Ved kørsel af \imul{} med $x=0$ og $y=0$, er anstallet af instruktioner der bliver udført $14$. Hvis man kører programmet med en hvilken som helst anden værdi af $y$, vil antallet af instruktioner være det samme.
+For hver gang $x$ bliver en større, skal der udføres 13 instruktioner. Dette
+svarer til det antal instruktioner, som findes i kroppen af while-løkken.
+Derudover skal der udføres 14 instruktioner uden for løkken. Antallet af instruktioner $i$ som funktion af parameteren $x$ kan derfor skrives som
 
-For hver gang x bliver en større, skal der udføres 13 ekstra instruktioner. Dette svarer til det antal instruktioner, som findes i \imul{}s \texttt{while} sektion. Samtidig er det mindste antal instruktioner der kan udføres, 14.
+\[i(x) = 13x + 14\]
 
-Dette kan beskrives med følgende afhængighed.
-
-\[
-	i = 13x + 14
-\]
-
-For at eftervise afhængigheden, har vi lavet en tabel over antallet af instruktioner ved kørsel af imul med nogle forskellige parametre:
+For at eftervise denne model laver vi en tabel over antallet af instruktioner
+ved kørsel af \imul{} med forskellige parametre:
 
 \begin{tabular}{|c|c|c|}
 \hline
@@ -194,9 +193,7 @@ x & y & Instruktioner \\ \hline
 
 \end{tabular}
 
-Det passer med vores generelle udtryk. Fx.:
-
-$50 \times 13 + 14 = 664$
+Disse data stemmer netop overens med vores model.
 
 \subsection{Optimering af \imul{}}
 
