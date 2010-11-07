@@ -26,7 +26,7 @@ Kørsel af programmet \texttt{imul.c} gav:
 $\text{imul}(2,3) = 6$.
 
 Ved kørsel med en negativ værdi for $x$ fås resultatet $0$.  $x$, den første
-operand til \imul, indgår nemlig i while-løkkens betingelse: \texttt{while ( x
+parameter i \imul, indgår nemlig i while-løkkens betingelse: \texttt{while ( x
 > 0 )}. Hvis $x$ ikke er positiv, så vil løkken ikke blive udført, og
 resultatet af funktionen vil være $0$, selvom $xy\ne0$.
 
@@ -35,11 +35,11 @@ En kørsel med $x=2$ og $y=-4$ gav:
 $\text{imul}(2,-4) = -8$.
 
 Programmet vil altid multiplicere korrekt når $x$ er positiv, da
-addition/subtraktion er defineret for alle heltal, sådan som det sker i
+addition/subtraktion er veldefineret for alle heltal, sådan som det sker i
 kodelinjen \texttt{p = p + y}.  Hvis $y$ er negativ, så vil $p$ blive mindre.
 
-Rent matematisk har funktionen \imul{} en state, der er givet ved tuplen
-$(x,y,p)$. Så længe $x>0$ vil kroppen af while-løkken ændre staten af
+Rent matematisk har funktionen \imul{} en state, der kan angives entydigt ved
+tuplen $(x,y,p)$. Så længe $x>0$ vil kroppen af while-løkken ændre staten af
 funktionen: $x$ bliver \'en mindre, og $y$ bliver lagt til $p$. Dette
 fortsætter indtil $x$ er mindre end eller lig med $0$, hvor resultatet af
 funktionen er $p$. Det kan beskrives ved en funktion såsom
@@ -49,7 +49,7 @@ funktionen er $p$. Det kan beskrives ved en funktion såsom
 \end{array}\right.\]
 
 \begin{theorem}
-	For $x,y,p\in\mathbb{Z},x\leq0$ er $\delta(x,y,p)=xy+p$.
+	For $x,y,p\in\mathbb{Z},x\geq0$ er $\delta(x,y,p)=xy+p$.
 \end{theorem}
 
 \begin{proof}
@@ -135,12 +135,13 @@ Efter ordren \texttt{invokevirtual imul} ser stakken således ud:
 $\text{stack} = 15, 51, 0, 3, 2, 22, 0, 1$
 
 Når \texttt{invokevirtual imul} køres, ser maskinen, at \imul{} tager to
-argumenter. Så popper den to argumenter samt en objektreference (som smides
-væk) fra stakken og laver en ny stakbase med en link pointer, parameterliste,
-lokal variabelliste samt den tidligere programtæller og link pointer-adresse.
-Link pointeren, $22$, peger på hukommelsescellen der indeholder den tidligere
-programtæller, som er $51$. Tæller vi nedad fra $22$ ved den tidligere
-programtæller finder vi følgende adresser:
+argumenter. Så popper den to argumenter (2 og 3) samt en objektreference (44 -
+denne smides væk) fra stakken og laver en ny stakbase med en link pointer (22),
+parameterliste (2, 3), lokal variabelliste (0) samt den tidligere programtæller
+(51) og link pointer-adresse (15).  Link pointeren (22), peger på
+hukommelsescellen der indeholder den tidligere programtæller (51).  Tæller vi
+nedad fra adresse nummer $22$ ved den tidligere programtæller finder vi
+følgende adresser:
 
 \begin{tabular}{|r|r|l|}
 	\hline
