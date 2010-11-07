@@ -204,6 +204,112 @@ Disse data stemmer netop overens med vores model.
 
 \subsection{Optimering af \imul{}}
 
-For at mindske antallet af instruktioner, kan man TODO: optimér imul.
+En lineær sammenhæng mellem antallet af ordrer udført og parameteren til
+metoden er skidt. Hvis vi erstatter instruktionen \texttt{bipush}, som er
+begrænset til signed 8-bit integers i intervallet -128 til 127, med
+instruktionen \texttt{ldc\_w}, kan vi køre metoden med hvilke som helst
+parametre mellem $-2^{31}$ og $2^{31}-1$. For store værdier af $x$ tager dette
+dog meget lang tid.
+
+Vi udnytter, at $x\cdot y=\frac 12x\cdot2y$. Hvis vi kan lave denne omskrivning
+på runtime i \imul{}, vil det gøre metoden hurtigere for større tal, da
+while-løkken kun skal udføres halvt så mange gange (eller færre, hvis vi kan
+genbruge trikket og omskrive til $\frac14x\cdot4y$, osv.).
+
+Der findes dog ikke instruktioner til hverken at dividere eller gange i dette
+instruktionssæt. (Hvis der gjorde, ville det gøre denne opgave betydeligt mere
+uinteressant!) Vi kan dog nemt gange med 2 ved at omskrive $y=2y$ til
+$y=y+y$, eller i IJVM til $\texttt{iload y} \quad \texttt{dup} \quad
+\texttt{iadd} \quad \texttt{istore y}$.
+
+I stedet for at dividere $x$ med $2$ indfører vi en ny variabel, $step$, som
+angiver, hvor meget vi skal trække fra $x$ i hver iteration. Det giver sig
+selv, at vores løkke bliver kørt lige mange gange, hvis vi trækker $step$ fra
+$x$ hver gang, som hvis vi trækker $1$ fra $x/step$. At dividere $x$ med 2
+giver samme resultat som at fordoble $step$, såfremt $x$ er deleligt med
+$step$. Til at starte med er $step=1$, men hvis $x$ er deleligt med $2$, så
+bliver $step$ og $y$ fordoblet.
+
+For at tjekke om $x$ er deleligt med $step$ udnytter vi, at $step$ altid er en
+potens af $2$. Vi kan nemlig afgøre, om et heltal $x$ er deleligt med $2^n$ ved
+at tjekke de nederste $n-1$ bits af den binære repræsentation af $x$: Hvis de
+er $0$, så er $x$ delelig med $2^n$. Vi indfører derfor en variabel $mask$, som
+er lig $step*2-1$. Hvis $x\ \&\ mask=0$ (ved operationen bitwise AND, kaldet
+IAND i IJVM), så er $x$ delelig med $step$, og vi kan fordoble $step$ og $y$ og
+lægge den nye $step$ til $mask$ uden at ændre det endelige resultat af \imul.
+
+Rent konkret realiseres det ovenstående ved at omskrive while-løkken i \imul{} til det følgende:
+
+\begin{lstlisting}
+while:                 // while
+   iload x
+   iflt end_while
+   iload x
+   ifeq end_while      //    ( x > 0 ) {
+   iload x
+   iload mask
+   iand
+   ifeq incrsub        //    if (x & mask != 0) {
+   goto post_incrsub
+incrstep:
+   iload step
+   dup
+   iadd
+   dup
+   istore step         //       step += step;
+   iload mask
+   ior
+   istore mask         //       mask |= step;
+   iload y
+   dup
+   iadd
+   istore y            //       y += y;
+post_incrsub:          //    }
+   iload x
+   iload step
+   isub
+   istore x            //    x = x - step;
+   iload p
+   iload y
+   iadd
+   istore p            //    p = p + y;
+   goto while          // }
+end_while:
+\end{lstlisting}
+
+$mask$ og $step$ skal naturligvis erklæres som lokale variabler.
+
+For små værdier af $x$ vil dette naturligvis give et større antal operationer,
+men der vil hurtigt være tid at spare. Uden denne optimering tager det 664
+ordrer at foretage en udregning med $x=50$; med optimeringen tager denne bare
+169 ordrer.
+%
+%\begin{tabular}{rr|rr|rr|rr}
+% 1 & 35   & 26 & 140  & 51 & 187  & 76 & 216 \\
+% 2 & 46   & 27 & 158  & 52 & 187  & 77 & 234 \\
+% 3 & 64   & 28 & 158  & 53 & 205  & 78 & 180 \\
+% 4 & 64   & 29 & 176  & 54 & 169  & 79 & 198 \\
+% 5 & 82   & 30 & 133  & 55 & 187  & 80 & 198 \\
+% 6 & 75   & 31 & 151  & 56 & 187  & 81 & 216 \\
+% 7 & 93   & 32 & 151  & 57 & 205  & 82 & 198 \\
+% 8 & 93   & 33 & 169  & 58 & 187  & 83 & 216 \\
+% 9 & 111  & 34 & 151  & 59 & 205  & 84 & 216 \\
+%10 & 93   & 35 & 169  & 60 & 205  & 85 & 234 \\
+%11 & 111  & 36 & 169  & 61 & 223  & 86 & 198 \\
+%12 & 111  & 37 & 187  & 62 & 162  & 87 & 216 \\
+%13 & 129  & 38 & 151  & 63 & 180  & 88 & 216 \\
+%14 & 104  & 39 & 169  & 64 & 180  & 89 & 234 \\
+%15 & 122  & 40 & 169  & 65 & 198  & 90 & 216 \\
+%16 & 122  & 41 & 187  & 66 & 180  & 91 & 234 \\
+%17 & 140  & 42 & 169  & 67 & 198  & 92 & 234 \\
+%18 & 122  & 43 & 187  & 68 & 198  & 93 & 252 \\
+%19 & 140  & 44 & 187  & 69 & 216  & 94 & 180 \\
+%20 & 140  & 45 & 205  & 70 & 180  & 95 & 198 \\
+%21 & 158  & 46 & 151  & 71 & 198  & 96 & 198 \\
+%22 & 122  & 47 & 169  & 72 & 198  & 97 & 216 \\
+%23 & 140  & 48 & 169  & 73 & 216  & 98 & 198 \\
+%24 & 140  & 49 & 187  & 74 & 198  & 99 & 216 \\
+%25 & 158  & 50 & 169  & 75 & 216  &100 & 216 \\
+%\end{tabular}
 
 \end{document}
