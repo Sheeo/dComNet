@@ -121,7 +121,7 @@ ireturn             &\texttt{[ac]       }& stack = 6
 
 return value: 6
 
-Stakkens maksimale størrelse er $8$.
+Stakkens maksimale størrelse er $11$.
 
 Efter ordren \texttt{invokevirtual imul} ser stakken således ud:
 
@@ -159,7 +159,8 @@ programtæller, 51, peger på den sidste instruktion i programmet, som
 efterfølger kaldet til \texttt{invokevirtual} i \texttt{main}: \texttt{ac}
 (\texttt{ireturn}).
 
-Som det kan ses fra tracen ovenfor, er stakkens maksimale størrelse 10.  Denne
+Trace-outputtet ovenfor, viser kun de øverste 8 elementer af stakken. Dette er vildledende
+da man ved optælling får den korrekte maksimale stack-størrelse, som er 11.  Denne
 størrelse optræder i while-løkken, når vi foretager binær aritmetik: Første
 gang når vi skal udregne $x-1$, og anden gang når vi skal udregne $p+y$.
 
