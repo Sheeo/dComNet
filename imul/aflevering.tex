@@ -179,8 +179,8 @@ Antallet af ordrer $i$ som funktion af parameteren $x$ kan derfor
 skrives som
 
 \[i(x)=\left\{\begin{array}{cc}
-	13x + 14 & \text{hvis }x\geq0 \\
-	12 & \text{hvis }x<0
+	13x + 13 & \text{hvis }x\geq0 \\
+	11 & \text{hvis }x<0
 \end{array}\right.\]
 
 
@@ -190,14 +190,14 @@ ved kørsel af \imul{} med forskellige parametre:
 \begin{tabular}{|c|c|c|}
 \hline
 $x$ & $y$ & ordrer \\ \hline
--5  & 2  &  12 \\ \hline
--1  & 2  &  12 \\ \hline
- 0  & 2  &  14 \\ \hline
- 1  & 1  &  27 \\ \hline
- 2  & 3  &  40 \\ \hline
- 3  & 5  &  53 \\ \hline
- 4  & 4  &  66 \\ \hline
-50  & 1  & 664 \\ \hline
+-5  & 2  &  11 \\ \hline
+-1  & 2  &  11 \\ \hline
+ 0  & 2  &  13 \\ \hline
+ 1  & 1  &  26 \\ \hline
+ 2  & 3  &  39 \\ \hline
+ 3  & 5  &  52 \\ \hline
+ 4  & 4  &  65 \\ \hline
+50  & 1  & 663 \\ \hline
 \end{tabular}
 
 Disse data stemmer netop overens med vores model.
@@ -280,7 +280,7 @@ end_while:
 $mask$ og $step$ skal naturligvis erklæres som lokale variabler.
 
 For små værdier af $x$ vil dette naturligvis give et større antal operationer,
-men der vil hurtigt være tid at spare. Uden denne optimering tager det 664
+men der vil hurtigt være tid at spare. Uden denne optimering tager det 663
 ordrer at foretage en udregning med $x=50$; med optimeringen tager denne bare
 169 ordrer.
 %
