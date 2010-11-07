@@ -121,6 +121,44 @@ ireturn             &\texttt{[ac]       }& stack = 6
 
 return value: 6
 
+Stakkens maksimale størrelse er 
+
+Efter ordren \texttt{invokevirtual imul} ser stakken således ud:
+
+$\text{stack} = 15, 51, 0, 3, 2, 22, 0, 1$
+
+Når \texttt{invokevirtual imul} køres, ser maskinen, at \imul{} tager to
+argumenter. Så popper den to argumenter samt en objektreference (som smides
+væk) fra stakken og laver en ny stakbase med en link pointer, parameterliste,
+lokal variabelliste samt den tidligere programtæller og link pointer-adresse.
+Link pointeren, $22$, peger på hukommelsescellen der indeholder den tidligere
+programtæller, som er $51$. Tæller vi nedad fra $22$ ved den tidligere
+programtæller finder vi følgende adresser:
+
+\begin{tabular}{|r|r|l|}
+	\hline
+	Adr. & Værdi & Forklaring \\
+	\hline
+	23 & 15 & tidligere LV \\
+	22 & 51 & tidligere PC \\
+	21 & 0 & lokal variabel \\
+	20 & 3 & parameter \\
+	19 & 2 & parameter \\
+	18 & 22 & LV \\
+	\hline
+	17 & 0 & tidligere LV \\
+	16 & 1 & tidligere PC \\
+	15 & 16 & LV \\
+	\hline
+\end{tabular}
+
+Hvorfor starter \texttt{main}s stak på adressen 15, og ikke på adressen 0?
+Forklaringen her er, at de første 13 words (52 bytes) indeholder metodeområdet
+og de næste 2 words indeholder programmets konstanter. Den tidligere
+programtæller, 51, peger på den sidste instruktion i programmet, som
+efterfølger kaldet til \texttt{invokevirtual} i \texttt{main}: \texttt{ac}
+(\texttt{ireturn}).
+
 Hvis vi kører programmet \imul{} med parametrene $x=-1$ og $y=5$, får vi resultatet $0$
 
 Det fremgår af stack-tracen:
