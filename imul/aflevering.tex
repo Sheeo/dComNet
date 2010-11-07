@@ -149,7 +149,7 @@ Hvis vi kører programmet med parametrene $x=2$ og $y=3$, får vi resultatet $6$
 
 Som det kan ses fra stack-tracen i filen "imul2.trace", så er stakken størst, efter instruktionen \texttt{invokevirtual 0 [b6 00 00]}. Den har en størrelse på $8$.
 
-Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da programmet ikke kan eksekveres med værdier uden for dette domæne. Dog ville stakken skulle være større, hvis man gav x og y arbitrære værdier, som kræver at man lagrer dem i flere registre.
+Stakkens størrelse er konstant for $-128 < x < 128$ og $-128 < y < 128$, da programmet ikke kan eksekveres med værdier uden for dette domæne. Dog ville stakken skulle være større, hvis man gav x og y tilpads store værdier, som ville kræve at man skal lagre dem i flere registre.
 
 \subsection{Antallet af instruktioner ved kørsel af \imul{}}
 Ved kørsel af \imul{} med $x=0$ og $y=0$, er anstallet af instruktioner der bliver udført $14$.
@@ -178,7 +178,7 @@ Fra tabellen, kan man se et mønster, beskrevet ved følgende afhængighed:
 	i = 13x + 14
 \]
 
-Dette skyldes, at for hvergang x bliver en større, skal der udføres 13 ekstra instruktioner, for at addere x og y.
+Dette skyldes, at for hvergang x bliver en større, skal der udføres 13 ekstra instruktioner, for at addere x og y. Samt en basis-mængde af instruktioner, som udgør 14.
 
 For at mindske antallet af instruktioner, kan man TODO: optimér imul.
 
