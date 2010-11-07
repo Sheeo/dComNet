@@ -179,7 +179,11 @@ Derudover skal der udføres 14 instruktioner uden for løkken.
 Antallet af instruktioner $i$ som funktion af parameteren $x$ kan derfor
 skrives som
 
-\[i(x) = 13x + 14\]
+\[i(x)=\left\{\begin{array}{cc}
+	13x + 14 & \text{hvis }x\geq0 \\
+	14 & \text{hvis }x<0
+\end{array}\right.\]
+
 
 For at eftervise denne model laver vi en tabel over antallet af instruktioner
 ved kørsel af \imul{} med forskellige parametre:
