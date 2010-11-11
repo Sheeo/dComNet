@@ -3,7 +3,8 @@
 \usepackage[danish]{babel}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{listings}
-
+\lstloadlanguages{C}
+\lstset{language=C}
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
 
@@ -21,5 +22,20 @@
 \maketitle
 
 \section{Corrected version of \imul}
+
+\begin{lstlisting}
+	int imul(int x, int y)
+	{ 
+	  int p;
+	    
+	  p = 0;
+	  while ( x > 0 ) {
+	    x = x - 1;
+	    p = p + y;
+	  }
+	  return p;
+	}
+\end{lstlisting}
+
 
 \end{document}
