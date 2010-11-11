@@ -19,7 +19,35 @@ ijvm-asm > gen/imul.bc <<J
 	istore mask             // mask = 1;
 
 	iload x
+	iflt then
+	goto endif
+then:
+	bipush 0
+	iload x
+	isub
+	istore x
+	bipush 0
 	iload y
+	isub
+	istore y
+endif:
+
+	iload x // gte zero
+
+	// find |y|
+	bipush 0
+	iload y
+	dup
+	iflt then2
+	goto else2
+then2:
+	isub // negate y
+	goto endif2
+else2:
+	iadd // swallow the zero
+endif2:
+	// stack now contains x, |y|, and we have ensured that x>0
+
 	isub
 	dup
 	iflt post_swap
