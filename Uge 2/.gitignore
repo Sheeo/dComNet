@@ -1,0 +1,9 @@
+imul
+imul.j
+imul.bc
+imul.trace
+*.dvi
+*.aux
+*.pdf
+*.log
+gen
