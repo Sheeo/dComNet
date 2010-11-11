@@ -21,21 +21,42 @@
 \begin{document}
 \maketitle
 
-\section{Corrected version of \imul}
+\section{Corrected version of \imul{} in C}
 
 \begin{lstlisting}
-	int imul(int x, int y)
-	{ 
-	  int p;
-	    
-	  p = 0;
-	  while ( x > 0 ) {
-	    x = x - 1;
-	    p = p + y;
-	  }
-	  return p;
-	}
+int imul(int x, int y)
+{ 
+  int r; 
+  int sign;
+    
+  sign = 1;
+  if ( x < 0 ) {
+    x = -x;
+    sign = 0;
+  }
+
+  r = 0;
+  while ( x > 0 ) {
+    x = x - 1;
+    r = r + y;
+  }
+
+  if ( sign == 0 ) r = -r;
+
+  return r;
+}
 \end{lstlisting}
 
+\section{Corrected \imul{} in IJVM}
+
+\lstset{language=JVMIS}
+\begin{lstlisting}
+.define newimul
+	bipush 5
+	bipush 2
+	iadd
+	ireturn
+
+\end{lstlisting}
 
 \end{document}
