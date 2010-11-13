@@ -23,6 +23,9 @@
 
 \section{Corrected version of \imul{} in C}
 
+Følgende C-funktion \texttt{imul.c} kan udføre heltalsmultiplikation for både
+negative og positive argumenter:
+
 \begin{lstlisting}
 int imul(int x, int y)
 { 
@@ -49,14 +52,100 @@ int imul(int x, int y)
 
 \section{Corrected \imul{} in IJVM}
 
+En tilsvarende IJVM-metode ser således ud:
+
 \lstset{language=JVMIS}
 \begin{lstlisting}
-.define newimul
-	bipush 5
-	bipush 2
-	iadd
-	ireturn
+.method imul     // int imul(int x, int y) {
+.args 3
+.locals 2
+.define x = 1
+.define y = 2
+.define r = 3    // int r;
+.define sign = 4 // int sign;
 
+  bipush 0
+  istore r       // r = 0;
+
+  bipush 1
+  istore sign    // sign = 0;
+
+  iload x
+  iflt THEN
+  goto ENDIF
+
+THEN:            // if (x < 0) {
+  bipush 0
+  iload x
+  isub
+  istore x       //   x = -x;
+
+  bipush 0
+  istore sign    //   sign = 0;
+
+ENDIF:           // }
+WHILE:
+  iload x dup
+  iflt ENDWHILE
+  ifeq ENDWHILE  // while (x > 0) {
+
+  iload x
+  bipush 1
+  isub
+  istore x       //   --x;
+
+  iload r
+  iload y
+  iadd
+  istore r       //   r += y;
+
+  goto WHILE     // }
+
+ENDWHILE:
+  iload sign
+  ifeq THEN2
+  goto ENDIF2    // if (sign == 0) {
+
+THEN2:
+  bipush 0
+  iload r
+  isub
+  istore r       //   r = -r;
+
+ENDIF2:          // }
+  iload r
+  ireturn        // return r;
+
+.method main
+.args 3
+  bipush 120 // objref
+  iload 1
+  iload 2
+  invokevirtual imul
+  ireturn
 \end{lstlisting}
 
+Et hovedprogram med to argumenter er blevet udformet så \texttt{imul}-metoden
+kan afprøves. Hovedprogrammet ser således ud:
+
+\begin{lstlisting}
+#!/bin/sh
+if ! [ -e gen ]; do mkdir gen; done
+ijvm-asm imul.j|ijvm - $1 $2 > gen/trace
+wc -l gen/trace
+tail -1 gen/trace
+\end{lstlisting}
+
+Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumenterne. Programmet gav
+
+\begin{lstlisting}
+% sh ijvm.sh 4 4
+16
+% sh ijvm.sh -5 9
+-45
+% sh ijvm.sh 3 -8
+-24
+% sh ijvm.sh -6 -7
+42
+\end{lstlisting}
 \end{document}
