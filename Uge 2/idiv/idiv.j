@@ -56,3 +56,5 @@ END_WHILE2:
 	iload 2
 	invokevirtual idiv
 	ireturn
+
+// vim:syn=bytecode:
