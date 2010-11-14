@@ -4,13 +4,28 @@
 int idiv(int x, int y) { 
 	int q;
 	q = 0;
-	while ( x >= y ) {
-		x = x - y;
-		q = q + 1;
-	}
-	while ( x <= -y ) {
-		x = x + y;
-		q = q - 1;
+	if (x >= 0) {
+		if (y >= 0) {
+			while (x >= y) {
+				x = x - y;
+				q = q + 1;
+			}
+		} else {
+			while (x >= -y) {
+				x = x + y;
+				q = q - 1;
+			}
+		}
+	} else if (y >= 0) {
+		while (x <= -y) {
+			x = x + y;
+			q = q - 1;
+		}
+	} else {
+		while (x <= y) {
+			x = x - y;
+			q = q + 1;
+		}
 	}
 	return q;
 }
@@ -31,7 +46,7 @@ int main(int argc, char *argv[]) {
 	int res = idiv(x, y);
 	printf("idiv(%d, %d) = %d.\n", x, y, res);
 	if (res != x/y) {
-		fprintf(stderr, "warning: %d = idiv(%d, %d) != %2$d/%3$d = %d\n", res, x, y, x/y);
+		fprintf(stderr, "warning: %1$d = idiv(%2$d, %3$d) != %2$d/%3$d = %4$d\n", res, x, y, x/y);
 		return 1;
 	}
 	return 0;
