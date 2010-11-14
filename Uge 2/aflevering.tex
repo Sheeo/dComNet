@@ -59,31 +59,29 @@ A corresponding IJVM method could look like this:
 A main program accepting two arguments has been crafted so the \texttt{imul}
 method can be tested. The main program looks like this:
 
-\lstset{language=sh}
 \begin{lstlisting}
-#!/bin/sh
-if ! [ -e gen ]; do mkdir gen; done
-ijvm-asm imul.j|ijvm - $1 $2 > gen/trace
-wc -l gen/trace
-tail -1 gen/trace
+.method main
+.args 3
+bipush 120 // objref
+iload 1
+iload 2
+invokevirtual imul
+ireturn
 \end{lstlisting}
 
-The program is simply a shell script that assembles the IJVM code and runs it,
-passing the two arguments $x$ and $y$ from the command line. The trace output
-is stored in a temporary file (in the folder \texttt{gen} designated for
-generated files), and it's line count and return line are printed to the user.
-
-Running the main program with all four combinations of positive/negative arguments gave the following output:
+Running the main program with all four combinations of positive/negative
+arguments gave the following output:
 
 \lstset{language=sh,numbers=none}
 \begin{lstlisting}
-% sh imul.sh 4 4
+% ijvm-asm imul.j > imul.bc
+% ijvm imul.bc 4 4
 16
-% sh imul.sh -5 9
+% ijvm imul.bc -5 9
 -45
-% sh imul.sh 3 -8
+% ijvm imul.bc 3 -8
 -24
-% sh imul.sh -6 -7
+% ijvm imul.bc -6 -7
 42
 \end{lstlisting}
 \section{Improved \texttt{idiv}}
