@@ -36,7 +36,7 @@ title=\lstname,                 % show the filename of files included with \lsti
 \author{Mathias Rav, 20103940 \\
 		Michael Søndergaard, 20104223 \\
 		DAT-3}
-\date{Uge 2, 14.\ november 2010}
+\date{Week 2, 14.\ november 2010}
 
 \begin{document}
 \maketitle
@@ -124,12 +124,7 @@ The result was consistent with the result from the book:
 return value: 6
 \end{lstlisting}
 
-\subsection{Parsing of reverse polish-notation from stdin}
-Programmet polish.j kan beregne den statiske omvendte-polsk notations aritmetikstreng:
-$825\ \times\ +\ 132\ \times\ +\ 4\ -\ /$
+Using the putchar and getchar functionality of the IJVM-machine, one could potentially write a parser to interpret reverse polish arithmetic from stdin.
+The notation is inherently suited for a stack-based machine to parse, since the operators only operate on the past two results.
 
-In ijvm there are two built-in methods, \texttt{getchar} and \texttt{putchar}. These can be invoked using invokevirtual, and provide basic I/O functionality.
-As a proof-of-concept, we built a reverse polish arithmetic notation parser, that can parse an arbitrary reverse polish arithmetic-notation string.
-
-The program is in the file: \texttt{./polish-arithmetic/polish-parser.j}.
 \end{document}
