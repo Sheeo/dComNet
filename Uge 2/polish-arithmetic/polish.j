@@ -230,3 +230,5 @@ END_IDIVWHILE:
 	iload to1
 	invokevirtual idiv
 	ireturn
+
+// vim:syntax=bytecode:
