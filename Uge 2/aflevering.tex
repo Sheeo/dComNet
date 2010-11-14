@@ -114,26 +114,25 @@ return value: 3
 \end{lstlisting}
 
 \section{Udtryk fra SCO, side 368}
-Udtrykket fra SCO, side 368 er blevet beregnet af følgende IJVM program:
-
+We computed the expression from SCO, page 368, with the following IJVM-program:
 \lstset{language=JVMIS}
 \lstinputlisting{./polish-arithmetic/polish.j.presentation}
 
-Resultatet stemmer overens med resultatet i bogen:
+The result was consistent with the result from the book:
 \lstset{language=sh}
 \begin{lstlisting}
 % ijvm -s polish.bc
 return value: 6
 \end{lstlisting}
 
-\subsection{Parsing af omvendt polish-notation fra stdin}
+\subsection{Parsing of reverse polish-notation from stdin}
 Programmet polish.j kan beregne den statiske omvendte-polsk notations aritmetikstreng:
 $825\times+132\times+4-/$
 
-I ijvm kan man benytte \texttt{invokevirtual getchar} og \texttt{invokevirtual putchar} til hhv. at læse og skrive fra std-in og std-out.
+In ijvm there are two built-in methods, \texttt{getchar} and \texttt{putchar}. These can be invoked using invokevirtual, and provide basic I/O functionality.
+As a proof-of-concept, we built a reverse polish arithmetic notation parser, that can parse an arbitrary reverse polish arithmetic-notation string.
 
-Flg. program læser fra std-in, out udfører aritmetik som der bliver skrevet. Og ved forekomst af newline-character, returnerer det den øverste værdi på stakken.
-
+The program is in the file: \texttt{./polish-arithmetic/polish-parser.j}.
 
 
 \end{document}
