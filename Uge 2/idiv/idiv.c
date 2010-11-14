@@ -40,9 +40,9 @@ int main(int argc, char *argv[]) {
 	if (argc < 3 || !*argv[1] || !*argv[2]) return usage(argv[0]);
 	char *c;
 	int x = strtol(argv[1], &c, 0);
-	if (c == NULL) return usage(argv[0]);
+	if (c == NULL || *c != 0) return usage(argv[0]);
 	int y = strtol(argv[2], &c, 0);
-	if (c == NULL) return usage(argv[0]);
+	if (c == NULL || *c != 0) return usage(argv[0]);
 	int res = idiv(x, y);
 	printf("idiv(%d, %d) = %d.\n", x, y, res);
 	if (res != x/y) {
