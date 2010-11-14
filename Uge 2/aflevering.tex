@@ -43,21 +43,21 @@ title=\lstname,                 % show the filename of files included with \lsti
 
 \section{Corrected version of \imul{} in C}
 
-Følgende C-funktion \texttt{imul.c} kan udføre heltalsmultiplikation for både
-negative og positive argumenter:
+The following C function \texttt{imul.c} can do integer multiplication for
+positive as well as negative arguments:
 
 \lstset{language=C}
 \lstinputlisting{./imul/imul.c.presentation}
 
 \section{Corrected \imul{} in IJVM}
 
-En tilsvarende IJVM-metode ser således ud:
+A corresponding IJVM method could look like this:
 
 \lstset{language=JVMIS}
 \lstinputlisting{./imul/imul.j.presentation}
 
-Et hovedprogram med to argumenter er blevet udformet så \texttt{imul}-metoden
-kan afprøves. Hovedprogrammet ser således ud:
+A main program accepting two arguments has been crafted so the \texttt{imul}
+method can be tested. The main program looks like this:
 
 \lstset{language=sh}
 \begin{lstlisting}
@@ -72,7 +72,7 @@ tail -1 gen/trace
 
 Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumenterne. Programmet gav
 
-\lstset{language=sh}
+\lstset{language=sh,numbers=none}
 \begin{lstlisting}
 % sh imul.sh 4 4
 16
@@ -86,22 +86,21 @@ Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumente
 
 \section{Improved \texttt{idiv}}
 
-C-funktionen \texttt{idiv} er blevet rettet og inkluderet i et C-program med
-henblik på afprøvning. (\texttt{./idiv/idiv.c}) Den er blevet afprøvet med alle
-kombinationer af fortegn for de to argumenter til C-funktionen.  Den rettede
-C-funktion ser således ud:
+The C function \texttt{idiv} has been fixed and included in a C program. It has
+been tested with all combinations of signs for $x$ and $y$. It looks like this:
 
-\lstset{language=C}
+\lstset{language=C,numbers=left}
 \lstinputlisting{./idiv/idiv.c}
 
-En tilsvarende metode \texttt{idiv} er blevet udformet i IJVM. Den kom til at se sådan ud:
+We have written a corresponding method \texttt{idiv} in IJVM. It looks like
+this:
 
 \lstset{language=JVMIS}
 \lstinputlisting{./idiv/idiv.j.presentation}
 
-Den er blevet afprøvet med de samme testdata som den rettede C-funktion.
+It has undergone the same testing as the fixed C function.
 
-\lstset{language=sh}
+\lstset{language=sh,numbers=none}
 \begin{lstlisting}
 % ijvm -s idiv.bc 10 3
 return value: 3
@@ -114,13 +113,13 @@ return value: 3
 \end{lstlisting}
 
 \section{Udtryk fra SCO, side 368}
-Udtrykket fra SCO, side 368 er blevet beregnet af følgende IJVM program:
+The expression from SCO p.\ 368 is calculated by the following IJVM program:
 
-\lstset{language=JVMIS}
+\lstset{language=JVMIS,numbers=left}
 \lstinputlisting{./polish-arithmetic/polish.j.presentation}
 
-Resultatet stemmer overens med resultatet i bogen:
-\lstset{language=sh}
+The program returns the correct result:
+\lstset{language=sh,numbers=none}
 \begin{lstlisting}
 % ijvm -s polish.bc
 return value: 6
@@ -133,7 +132,4 @@ $825\times+132\times+4-/$
 I ijvm kan man benytte \texttt{invokevirtual getchar} og \texttt{invokevirtual putchar} til hhv. at læse og skrive fra std-in og std-out.
 
 Flg. program læser fra std-in, out udfører aritmetik som der bliver skrevet. Og ved forekomst af newline-character, returnerer det den øverste værdi på stakken.
-
-
-
 \end{document}
