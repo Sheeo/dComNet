@@ -74,40 +74,27 @@ Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumente
 
 \lstset{language=sh}
 \begin{lstlisting}
-% sh ijvm.sh 4 4
+% sh imul.sh 4 4
 16
-% sh ijvm.sh -5 9
+% sh imul.sh -5 9
 -45
-% sh ijvm.sh 3 -8
+% sh imul.sh 3 -8
 -24
-% sh ijvm.sh -6 -7
+% sh imul.sh -6 -7
 42
 \end{lstlisting}
 
 \section{Improved \texttt{idiv}}
 
-C-funktionen idiv er blevet rettet og inkluderet i et C-program med henblik på afprøvning. (\texttt{./idiv/idiv.c})
-Den er blevet afprøvet med alle kombinationer af fortegn for de to argumenter til C-funktionen.
-Den rettede C-funktion ser således ud:
+C-funktionen \texttt{idiv} er blevet rettet og inkluderet i et C-program med
+henblik på afprøvning. (\texttt{./idiv/idiv.c}) Den er blevet afprøvet med alle
+kombinationer af fortegn for de to argumenter til C-funktionen.  Den rettede
+C-funktion ser således ud:
 
 \lstset{language=C}
-\begin{lstlisting}
-int idiv(int x, int y) { 
-	int q;
-	q = 0;
-	while ( x >= y ) {
-		x = x - y;
-		q = q + 1;
-	}
-	while ( x <= -y ) {
-		x = x + y;
-		q = q - 1;
-	}
-	return q;
-}
-\end{lstlisting}
+\lstinputlisting{./idiv/idiv.c}
 
-En tilsvarende metode idiv er blevet udformet i IJVM. Den kom til at se sådan ud:
+En tilsvarende metode \texttt{idiv} er blevet udformet i IJVM. Den kom til at se sådan ud:
 
 \lstset{language=JVMIS}
 \lstinputlisting{./idiv/idiv.j.presentation}
@@ -116,24 +103,21 @@ Den er blevet afprøvet med de samme testdata som den rettede C-funktion.
 
 \lstset{language=sh}
 \begin{lstlisting}
-% ijvm -s idiv.bc 4 4
-return value: 1
-% ijvm -s idiv.bc -5 9
-return value: 0
-% ijvm -s idiv.bc 3 -8
-return value: 0
-% ijvm -s idiv.bc -6 -7
-return value: 0
+% ijvm -s idiv.bc 10 3
+return value: 3
+% ijvm -s idiv.bc -42 2
+return value: -21
+% ijvm -s idiv.bc 57 -5
+return value: -11
+% ijvm -s idiv.bc -13 -4
+return value: 3
 \end{lstlisting}
-
-Det giver dog bedre mening, at teste med nogle andre tal. \texttt{idiv.j} er korrekt.
 
 \section{Udtryk fra SCO, side 368}
 Udtrykket fra SCO, side 368 er blevet beregnet af følgende IJVM program:
 
 \lstset{language=JVMIS}
 \lstinputlisting{./polish-arithmetic/polish.j.presentation}
-
 
 Resultatet stemmer overens med resultatet i bogen:
 \lstset{language=sh}
