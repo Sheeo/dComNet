@@ -1,3 +1,30 @@
+.method main
+.args 1
+.locals 2
+.define to1 = 1
+.define to2 = 2
+	bipush 120 // idiv objref
+			bipush 8
+
+			bipush 120 // imul objref
+			bipush 2
+			bipush 5
+			invokevirtual imul  // 2*5 = 10
+		iadd // 8+2*5 = 18
+
+				bipush 1
+
+				bipush 120 // imul objref
+				bipush 3
+				bipush 2
+				invokevirtual imul  // 3*2 = 6
+			iadd // 1+3*2 = 7
+
+			bipush 4
+		isub // 1+3*2-4 = 3
+	invokevirtual idiv // (8+2*5)/(1+3*2-4) = 18/3 = 6
+	ireturn
+
 // Integer multiplication.
   
 .method imul
@@ -203,32 +230,5 @@ NEGXNEGY_WHILE:
 END_IDIVWHILE:
 	iload q
 	ireturn		// return q
-
-.method main
-.args 1
-.locals 2
-.define to1 = 1
-.define to2 = 2
-	bipush 8
-	bipush 120 // objref
-	bipush 2
-	bipush 5
-	invokevirtual imul
-	iadd
-	bipush 1
-	bipush 120 // objref
-	bipush 3
-	bipush 2
-	invokevirtual imul
-	iadd
-	bipush 4
-	isub
-	istore to1
-	istore to2
-	bipush 120 // objref
-	iload to2
-	iload to1
-	invokevirtual idiv
-	ireturn
 
 // vim:syntax=bytecode:
