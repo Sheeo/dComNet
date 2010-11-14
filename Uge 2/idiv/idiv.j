@@ -4,7 +4,9 @@
 .define x = 1
 .define y = 2
 .define q = 3	// int q;
-
+	
+	iload y
+	ifeq END_WHILE	// if y == 0, exit
 	bipush 0
 	istore q	// q = 0;
 	iload x
