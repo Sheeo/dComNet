@@ -7,45 +7,91 @@
 
 	bipush 0
 	istore q	// q = 0;
-WHILE:
+	iload x
+	iflt NEGX
+	iload y
+	iflt POSXNEGY
+	goto POSXPOSY
+NEGX:
+	iload y
+	iflt NEGXNEGY
+	goto NEGXPOSY
+
+POSXPOSY:
 	iload x
 	iload y
 	isub
-	dup
-	ifeq END_WHILE
 	iflt END_WHILE	// while (x >= y) {
-	iload y
 	iload x
+	iload y
 	isub
 	istore x	// x = x-y
 	bipush 1
 	iload q
 	iadd
 	istore q	// q = q+1
-	goto WHILE	// }
+	goto POSXPOSY	// }
 
-END_WHILE:
-WHILE2:
-	iload x
-	bipush 0
-	iload y
-	isub
-	isub
-	dup
-	ifeq END_WHILE2
-	iflt END_WHILE2	// while ( x <= -y )
-
+POSXNEGY:
 	iload x
 	iload y
 	iadd
-	istore x	// x = x + y
+	iflt END_WHILE	// while (x >= -y) {
+	iload x
+	iload y
+	iadd
+	istore x	// x = x+y
 	iload q
 	bipush 1
 	isub
-	istore q	// q = q - 1
-	goto WHILE2	// }
+	istore q	// q = q-1
+	goto POSXNEGY	// }
 
-END_WHILE2:
+
+NEGXPOSY:
+	iload x
+	iload y
+	iadd
+	dup
+	ifeq NEGXPOSY_WHILE
+	iflt NEGXPOSY_WHILE
+	goto END_WHILE	// while (x <= -y) {
+
+NEGXPOSY_WHILE:
+	iload x
+	iload y
+	iadd
+	istore x	// x = x+y
+
+	iload q
+	bipush 1
+	isub
+	istore q	// q = q-1
+	goto NEGXPOSY	// }
+
+
+NEGXNEGY:
+	iload x
+	iload y
+	isub
+	dup
+	iflt NEGXNEGY_WHILE
+	ifeq NEGXNEGY_WHILE
+	goto END_WHILE	// while (x <= y) {
+NEGXNEGY_WHILE:
+	iload x
+	iload y
+	isub
+	istore x	// x = x-y
+
+	iload q
+	bipush 1
+	iadd
+	istore q	// q = q+1
+	goto NEGXNEGY	// }
+
+
+END_WHILE:
 	iload q
 	ireturn		// return q
 
