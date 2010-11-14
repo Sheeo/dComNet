@@ -282,3 +282,5 @@ read_char:
 	iload operator
 	invokevirtual parsechar
 	goto read_char
+
+// vim:syn=bytecode:
