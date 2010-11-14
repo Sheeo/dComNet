@@ -3,14 +3,34 @@
 \usepackage[danish]{babel}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{listings}
+\usepackage{color}
 \lstloadlanguages{C,sh,JVMIS}
-\lstset{language=C}
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
 
 \newcommand{\imul}{\texttt{imul}}
 
 \newtheorem{theorem}{Sætning}
+
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line 
+                                % will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+tabsize=1,	          	        % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+}
+
 
 \title{Computere og Netværk (Q2/2010)}
 \author{Mathias Rav, 20103940 \\
@@ -26,104 +46,15 @@
 Følgende C-funktion \texttt{imul.c} kan udføre heltalsmultiplikation for både
 negative og positive argumenter:
 
-\begin{lstlisting}
-int imul(int x, int y)
-{ 
-  int r; 
-  int sign;
-    
-  sign = 1;
-  if ( x < 0 ) {
-    x = -x;
-    sign = 0;
-  }
-
-  r = 0;
-  while ( x > 0 ) {
-    x = x - 1;
-    r = r + y;
-  }
-
-  if ( sign == 0 ) r = -r;
-
-  return r;
-}
-\end{lstlisting}
+\lstset{language=C}
+\lstinputlisting{./imul/imul.c.presentation}
 
 \section{Corrected \imul{} in IJVM}
 
 En tilsvarende IJVM-metode ser således ud:
 
 \lstset{language=JVMIS}
-\begin{lstlisting}
-.method imul     // int imul(int x, int y) {
-.args 3
-.locals 2
-.define x = 1
-.define y = 2
-.define r = 3    // int r;
-.define sign = 4 // int sign;
-
-  bipush 0
-  istore r       // r = 0;
-
-  bipush 1
-  istore sign    // sign = 0;
-
-  iload x
-  iflt THEN
-  goto ENDIF
-
-THEN:            // if (x < 0) {
-  bipush 0
-  iload x
-  isub
-  istore x       //   x = -x;
-
-  bipush 0
-  istore sign    //   sign = 0;
-
-ENDIF:           // }
-WHILE:
-  iload x dup
-  iflt ENDWHILE
-  ifeq ENDWHILE  // while (x > 0) {
-
-  iload x
-  bipush 1
-  isub
-  istore x       //   --x;
-
-  iload r
-  iload y
-  iadd
-  istore r       //   r += y;
-
-  goto WHILE     // }
-
-ENDWHILE:
-  iload sign
-  ifeq THEN2
-  goto ENDIF2    // if (sign == 0) {
-
-THEN2:
-  bipush 0
-  iload r
-  isub
-  istore r       //   r = -r;
-
-ENDIF2:          // }
-  iload r
-  ireturn        // return r;
-
-.method main
-.args 3
-  bipush 120 // objref
-  iload 1
-  iload 2
-  invokevirtual imul
-  ireturn
-\end{lstlisting}
+\lstinputlisting{./imul/imul.j.presentation}
 
 Et hovedprogram med to argumenter er blevet udformet så \texttt{imul}-metoden
 kan afprøves. Hovedprogrammet ser således ud:
@@ -178,10 +109,162 @@ int idiv(int x, int y) {
 
 En tilsvarende metode idiv er blevet udformet i IJVM. Den kom til at se sådan ud:
 
-\lstset{language=sh}
+\lstset{language=JVMIS}
 \begin{lstlisting}
+
+.method idiv	// int idiv(int x, int y)
+.args 3
+.locals 1
+.define x = 1
+.define y = 2
+.define q = 3	// int q;
+	
+	iload y
+	ifeq END_WHILE	// if y == 0, exit
+	bipush 0
+	istore q	// q = 0;
+	iload x
+	iflt NEGX
+	iload y
+	iflt POSXNEGY
+	goto POSXPOSY
+NEGX:
+	iload y
+	iflt NEGXNEGY
+	goto NEGXPOSY
+
+POSXPOSY:
+	iload x
+	iload y
+	isub
+	iflt END_WHILE	// while (x >= y) {
+	iload x
+	iload y
+	isub
+	istore x	// x = x-y
+	bipush 1
+	iload q
+	iadd
+	istore q	// q = q+1
+	goto POSXPOSY	// }
+
+POSXNEGY:
+	iload x
+	iload y
+	iadd
+	iflt END_WHILE	// while (x >= -y) {
+	iload x
+	iload y
+	iadd
+	istore x	// x = x+y
+	iload q
+	bipush 1
+	isub
+	istore q	// q = q-1
+	goto POSXNEGY	// }
+
+
+NEGXPOSY:
+	iload x
+	iload y
+	iadd
+	dup
+	ifeq NEGXPOSY_WHILE
+	iflt NEGXPOSY_WHILE
+	goto END_WHILE	// while (x <= -y) {
+
+NEGXPOSY_WHILE:
+	iload x
+	iload y
+	iadd
+	istore x	// x = x+y
+
+	iload q
+	bipush 1
+	isub
+	istore q	// q = q-1
+	goto NEGXPOSY	// }
+
+
+NEGXNEGY:
+	iload x
+	iload y
+	isub
+	dup
+	iflt NEGXNEGY_WHILE
+	ifeq NEGXNEGY_WHILE
+	goto END_WHILE	// while (x <= y) {
+NEGXNEGY_WHILE:
+	iload x
+	iload y
+	isub
+	istore x	// x = x-y
+
+	iload q
+	bipush 1
+	iadd
+	istore q	// q = q+1
+	goto NEGXNEGY	// }
+
+
+END_WHILE:
+	iload q
+	ireturn		// return q
+
+.method main
+.args 3
+	bipush 120 // objref
+	iload 1
+	iload 2
+	invokevirtual idiv
+	ireturn
 
 \end{lstlisting}
 
+Den er blevet afprøvet med de samme testdata som den rettede C-funktion.
+
+\section{Udtryk fra SCO, side 368}
+Udtrykket fra SCO, side 368 er blevet beregnet af følgende IJVM program:
+
+\lstset{language=JVMIS}
+\begin{lstlisting}
+.method main
+.args 1
+.locals 2
+.define to1 = 1
+.define to2 = 2
+	bipush 8
+	bipush 120 // objref
+	bipush 2
+	bipush 5
+	invokevirtual imul
+	iadd
+	bipush 1
+	bipush 120 // objref
+	bipush 3
+	bipush 2
+	invokevirtual imul
+	iadd
+	bipush 4
+	isub
+	istore to1
+	istore to2
+	bipush 120 // objref
+	iload to2
+	iload to1
+	invokevirtual idiv
+	ireturn
+\end{lstlisting}
+
+Resultatet stemmer overens med resultatet i bogen:
+\lstset{language=sh}
+\begin{lstlisting}
+% ijvm -s polish.bc
+return value: 6
+\end{lstlisting}
+
+\subsection{Parsing af omvendt polish-notation fra stdin}
+Programmet polish.j kan beregne den statiske omvendte-polsk notations aritmetikstreng:
+$825\times+132\times+4-/$
 
 \end{document}

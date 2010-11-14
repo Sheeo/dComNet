@@ -1,0 +1,21 @@
+int imul(int x, int y)
+{ 
+  int r; 
+  int sign;
+    
+  sign = 1;
+  if ( x < 0 ) {
+    x = -x;
+    sign = 0;
+  }
+
+  r = 0;
+  while ( x > 0 ) {
+    x = x - 1;
+    r = r + y;
+  }
+
+  if ( sign == 0 ) r = -r;
+
+  return r;
+}
