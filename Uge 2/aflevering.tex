@@ -3,7 +3,7 @@
 \usepackage[danish]{babel}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{listings}
-\lstloadlanguages{C}
+\lstloadlanguages{C,sh,JVMIS}
 \lstset{language=C}
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
@@ -128,6 +128,7 @@ ENDIF2:          // }
 Et hovedprogram med to argumenter er blevet udformet så \texttt{imul}-metoden
 kan afprøves. Hovedprogrammet ser således ud:
 
+\lstset{language=sh}
 \begin{lstlisting}
 #!/bin/sh
 if ! [ -e gen ]; do mkdir gen; done
@@ -136,8 +137,11 @@ wc -l gen/trace
 tail -1 gen/trace
 \end{lstlisting}
 
+\clearpage
+
 Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumenterne. Programmet gav
 
+\lstset{language=sh}
 \begin{lstlisting}
 % sh ijvm.sh 4 4
 16
@@ -148,4 +152,34 @@ Kørsler af hovedprogrammet med alle fire kombinationer af fortegn for argumente
 % sh ijvm.sh -6 -7
 42
 \end{lstlisting}
+
+C-funktionen idiv er blevet rettet og inkluderet i et C-program med henblik på afprøvning. (\texttt{./idiv/idiv.c})
+Den er blevet afprøvet med alle kombinationer af fortegn for de to argumenter til C-funktionen.
+Den rettede C-funktion ser således ud:
+
+\lstset{language=C}
+\begin{lstlisting}
+int idiv(int x, int y) { 
+	int q;
+	q = 0;
+	while ( x >= y ) {
+		x = x - y;
+		q = q + 1;
+	}
+	while ( x <= -y ) {
+		x = x + y;
+		q = q - 1;
+	}
+	return q;
+}
+\end{lstlisting}
+
+En tilsvarende metode idiv er blevet udformet i IJVM. Den kom til at se sådan ud:
+
+\lstset{language=sh}
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
 \end{document}
