@@ -68,7 +68,10 @@ wc -l gen/trace
 tail -1 gen/trace
 \end{lstlisting}
 
-\clearpage
+The program is simply a shell script that assembles the IJVM code and runs it,
+passing the two arguments $x$ and $y$ from the command line. The trace output
+is stored in a temporary file (in the folder \texttt{gen} designated for
+generated files), and it's line count and return line are printed to the user.
 
 Running the main program with all four combinations of positive/negative arguments gave the following output:
 
@@ -83,7 +86,6 @@ Running the main program with all four combinations of positive/negative argumen
 % sh imul.sh -6 -7
 42
 \end{lstlisting}
-
 \section{Improved \texttt{idiv}}
 
 The C function \texttt{idiv} has been fixed and included in a C program. It has
