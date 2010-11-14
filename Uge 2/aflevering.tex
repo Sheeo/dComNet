@@ -114,7 +114,7 @@ return value: 3
 
 \section{Udtryk fra SCO, side 368}
 We computed the expression from SCO, page 368, with the following IJVM-program:
-\lstset{language=JVMIS}
+\lstset{language=JVMIS,numbers=left}
 \lstinputlisting{./polish-arithmetic/polish.j.presentation}
 
 The result was consistent with the result from the book:
@@ -124,7 +124,12 @@ The result was consistent with the result from the book:
 return value: 6
 \end{lstlisting}
 
-Using the putchar and getchar functionality of the IJVM-machine, one could potentially write a parser to interpret reverse polish arithmetic from stdin.
-The notation is inherently suited for a stack-based machine to parse, since the operators only operate on the past two results.
+Using the special IJVM builtins \texttt{putchar} and \texttt{getchar}, we could
+write a parser to interpret expressions in reverse polish notation from
+standard input.
+
+This notation is easy to parse with a stack-based machine such as the IJVM. An
+integer is taken to be pushed onto the stack, and an operator pops two operands
+and pushes the result of the operation.
 
 \end{document}
