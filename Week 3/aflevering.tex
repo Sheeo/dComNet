@@ -44,4 +44,24 @@ title=\lstname,                 % show the filename of files included with \lsti
 The IJVM machine represents signed integers using 32 bit two's complement.
 Thus, the machine is able to represent the signed integers from $-2^{31}$ (the
 binary value $100\dots000_2$) to $2^{31}-1$ (the binary value $011\dots111_2$).
+\section{\texttt{geq.j}}
+The program \texttt{geq.j} implements the relation $a\geq b$. 
+
+However, for instance when $a=-2^{31}=100\dots000_2$ and $b$ is a positive
+integer, i.e.\ with the two's complement representation that has a zero in the
+most significant bit, the difference $a-b$ will overflow and yield a positive
+integer, $2^{32}+a-b$. Rather than a negative difference, which would indicate
+that $a<b$, the code will believe that $a\geq b$ and return $1$.
+\subsection{Example: \texttt{geq}$(-2^{31}, 42)$}
+\begin{tabular}{lll}
+	Exp. & Binary & Interpretation \\
+	\hline
+	$a$ &   $10000000 \dots 00000000_2$ & $-2^{31}$ \\
+	$b$ &   $00000000 \dots 00101010_2$ & $42$ \\
+	$a-b$ & $01111111 \dots 11010110_2$ & $2147483606=2^{31}-42$
+\end{tabular}
+
+As the value pushed by the \texttt{isub} operation is interpreted as a positive
+integer, even though $a$ is negative and $b$ is positive and so $a-b$ is
+negative, the \texttt{geq} method returns $1$, meaning $a\geq b$.
 \end{document}
