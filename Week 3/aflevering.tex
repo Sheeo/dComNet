@@ -64,4 +64,74 @@ that $a<b$, the code will believe that $a\geq b$ and return $1$.
 As the value pushed by the \texttt{isub} operation is interpreted as a positive
 integer, even though $a$ is negative and $b$ is positive and so $a-b$ is
 negative, the \texttt{geq} method returns $1$, meaning $a\geq b$.
+\section{Fixing \texttt{geq}}
+We may avoid overflow in subtraction by checking the signs of the operands
+before subtracting. If $a$ is positive and $b$ is negative, then $a\geq b$ for
+any $|a|$ and $|b|$. Likewise, if $a$ is negative and $b$ positive, then $a<b$
+for any $|a|$ and $|b|$. Luckily, this is easy to test, even in IJVM.
+
+First, in C:
+
+\lstset{language=C}
+\begin{lstlisting}
+int geq(int a, int b) {
+	if (a < 0) {
+		if (b < 0) {
+			// a and b are both negative
+			if (a-b < 0) {
+				return 0;
+			} else {
+				return 1;
+			}
+		} else {
+			// a negative, b positive
+			return 0;
+		}
+	} else {
+		if (b < 0) {
+			// a positive, b negative
+		} else {
+			// a and b are both positive
+			if (a-b < 0) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+	}
+}
+\end{lstlisting}
+Notice how we used only the less-than operator. This code is easy to translate into IJVM.
+\lstset{language=JVMIS}
+\begin{lstlisting}
+.method geq
+.args 3
+	iload 1
+	iflt ANEG
+APOS:
+	iload 2
+	iflt APOSBNEG
+	goto SAMESIGN // a positive, b positive
+ANEG:
+	iload 2
+	iflt SAMESIGN // a negative, b negative
+	goto ANEGBPOS
+APOSBNEG:
+	bipush 1
+	ireturn
+ANEGBPOS:
+	bipush 0
+	ireturn
+SAMESIGN:
+	iload 1
+	iload 2
+	isub
+	iflt ELSE
+THEN:
+	bipush 1
+	ireturn
+ELSE:
+	bipush 0
+	ireturn
+\end{lstlisting}
 \end{document}
