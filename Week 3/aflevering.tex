@@ -65,13 +65,17 @@ $|a|_2\geq |b|_2$ and return $1$.
 \end{tabular}
 
 As the value pushed by the \texttt{isub} operation is interpreted as a positive
-integer, even though $a$ is negative and $b$ is positive and so $a-b$ is
-negative, the \texttt{geq} method returns $1$, meaning $a\geq b$.
+integer, even though $|a|_2$ is negative and $|b|_2$ is positive and so
+$|a|_2-|b|_2$ is negative, the \texttt{geq} method returns $1$, meaning
+$|a|_2\geq |b|_2$.
+
 \section{Fixing \texttt{geq}}
+
 We may avoid overflow in subtraction by checking the signs of the operands
-before subtracting. If $a$ is positive and $b$ is negative, then $a\geq b$ for
-any $|a|$ and $|b|$. Likewise, if $a$ is negative and $b$ positive, then $a<b$
-for any $|a|$ and $|b|$. Luckily, this is easy to test, even in IJVM.
+before subtracting. If $|a|_2$ is positive and $|b|_2$ is negative, then
+$|a|_2\geq |b|_2$ for any $a$ and $b$. Likewise, if $|a|_2$ is negative and
+$|b|_2$ positive, then $|a|_2<|b|_2$ for any $a$ and $b$. Luckily, this is easy
+to test, even in IJVM.
 
 First, in C:
 
