@@ -1,17 +1,37 @@
-.method main            // int main
-.args   3               // ( int a, int b )
-.define a = 1
-.define b = 2
-                        // {
-if:     iload a         // if (a >= b)
-        iload b
-        isub
+.method geq
+.args 3
+	iload 1
+	iflt ANEG
+APOS:
+	iload 2
+	iflt APOSBNEG
+	goto SAMESIGN // a positive, b positive
+ANEG:
+	iload 2
+	iflt SAMESIGN // a negative, b negative
+	goto ANEGBPOS
+APOSBNEG:
+	bipush 1
+	ireturn
+ANEGBPOS:
+	bipush 0
+	ireturn
+SAMESIGN:
+	iload 1
+	iload 2
+	isub
+	iflt ELSE
+THEN:
+	bipush 1
+	ireturn
+ELSE:
+	bipush 0
+	ireturn
 
-// stack = a - b, ... ; a - b < 0 => a < b
-
-        iflt else
-then:   bipush 1        //   return 1;
-        goto endif
-else:   bipush 0        //   return 0;
-endif:  ireturn         // }
-// vim:syn=bytecode:
+.method main
+.args 3
+	bipush 122
+	iload 1
+	iload 2
+	invokevirtual geq
+	ireturn

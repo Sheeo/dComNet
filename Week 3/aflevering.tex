@@ -69,6 +69,26 @@ integer, even though $|a|_2$ is negative and $|b|_2$ is positive and so
 $|a|_2-|b|_2$ is negative, the \texttt{geq} method returns $1$, meaning
 $|a|_2\geq |b|_2$.
 
+\subsection{Example runs}
+
+\begin{tabular}{rrcl}
+	$a$ & $b$ & $a\geq b$? & $\texttt{geq}(a, b)$ \\
+	\hline
+	$2$ & $5$ & No & return value: $0$ \\
+	$5$ & $2$ & Yes & return value: $1$ \\
+	$-10$ & $10$ & No & return value: $0$ \\
+	$12$ & $-8$ & Yes & return value: $1$ \\
+	$-2000000000$ & $1000000000$ & No & return value: $1$ \\
+	$2000000000$ & $-1000000000$ & Yes & return value: $0$ \\
+	$-2000000000$ & $-1000000000$ & No & return value: $0$ \\
+	$-1000000000$ & $-2000000000$ & Yes & return value: $1$
+\end{tabular}
+
+For $|a|\ll2^{31}$ and $|b|\ll2^{31}$, and when the signs of $a$ and $b$ are
+the same, this $geq$ implementation works just fine. However, in the fifth and
+sixth runs, the return value of $geq$ does not correspond with $a\geq b$ due to
+overflow in the subtraction.
+
 \section{Fixing \texttt{geq}}
 
 We may avoid overflow in subtraction by checking the signs of the operands
@@ -141,4 +161,23 @@ ELSE:
 	bipush 0
 	ireturn
 \end{lstlisting}
+
+\subsection{Example runs}
+
+\begin{tabular}{rrcl}
+	$a$ & $b$ & $a\geq b$? & $\texttt{geq}(a, b)$ \\
+	\hline
+	$2$ & $5$ & No & return value: $0$ \\
+	$5$ & $2$ & Yes & return value: $1$ \\
+	$-10$ & $10$ & No & return value: $0$ \\
+	$12$ & $-8$ & Yes & return value: $1$ \\
+	$-2000000000$ & $1000000000$ & No & return value: $0$ \\
+	$2000000000$ & $-1000000000$ & Yes & return value: $1$ \\
+	$-2000000000$ & $-1000000000$ & No & return value: $0$ \\
+	$-1000000000$ & $-2000000000$ & Yes & return value: $1$
+\end{tabular}
+
+Run with the same test cases as before, and we see that the return values of
+$geq$ in the fifth and sixth table entry are now correct when compared with
+$a\geq b$.
 \end{document}
