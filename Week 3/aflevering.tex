@@ -8,6 +8,7 @@
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
 
+\newcommand{\isub}{\texttt{isub}}
 \newcommand{\imul}{\texttt{imul}}
 
 \newtheorem{theorem}{Sætning}
@@ -45,20 +46,22 @@ The IJVM machine represents signed integers using 32 bit two's complement.
 Thus, the machine is able to represent the signed integers from $-2^{31}$ (the
 binary value $100\dots000_2$) to $2^{31}-1$ (the binary value $011\dots111_2$).
 \section{\texttt{geq.j}}
-The program \texttt{geq.j} implements the relation $a\geq b$. 
+The program \texttt{geq.j} implements the relation $a\geq b$ using integer
+subtraction in the function $geq:B_{32}\times B_{32}\rightarrow \{0,1\}$. This
+may lead to overflow when comparing integers with differing signs.
 
-However, for instance when $a=-2^{31}=100\dots000_2$ and $b$ is a positive
-integer, i.e.\ with the two's complement representation that has a zero in the
-most significant bit, the difference $a-b$ will overflow and yield a positive
-integer, $2^{32}+a-b$. Rather than a negative difference, which would indicate
-that $a<b$, the code will believe that $a\geq b$ and return $1$.
-\subsection{Example: \texttt{geq}$(-2^{31}, 42)$}
-\begin{tabular}{lll}
-	Exp. & Binary & Interpretation \\
-	\hline
-	$a$ &   $10000000 \dots 00000000_2$ & $-2^{31}$ \\
-	$b$ &   $00000000 \dots 00101010_2$ & $42$ \\
-	$a-b$ & $01111111 \dots 11010110_2$ & $2147483606=2^{31}-42$
+For instance, when $a=100\dots000, |a|_2=-2^{31}$ and $|b|_2$ is positive,
+i.e.\ with the two's complement representation that has a zero in the most
+significant bit, the difference $\isub(a,b)$ will overflow and yield a positive
+integer, $|\isub(a,b)|_2=2^{32}+|a|_2-|b|_2$. Rather than a negative
+difference, which would indicate that $|a|_2<|b|_2$, the code will believe that
+$|a|_2\geq |b|_2$ and return $1$.
+
+\subsection{Overflow example: \texttt{geq}$(-2^{31}, 42)$}
+\begin{tabular}{rl}
+	$a=10000000 \dots 00000000$ & $|a|_2=-2^{31}$ \\
+	$b=00000000 \dots 00101010$ & $|b|_2=42$ \\
+	$c=\isub(a,b)=01111111 \dots 11010110$ & $|c|_2=2147483606=2^{31}-42$
 \end{tabular}
 
 As the value pushed by the \texttt{isub} operation is interpreted as a positive
