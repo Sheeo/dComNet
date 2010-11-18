@@ -128,7 +128,7 @@ int geq(int a, int b) {
 	}
 }
 \end{lstlisting}
-Notice how we used only the less-than operator. This code is easy to translate into IJVM.
+This code is easy to translate into IJVM.
 \lstset{language=JVMIS}
 \begin{lstlisting}
 .method geq
@@ -177,9 +177,9 @@ ELSE:
 	$-1000000000$ & $-2000000000$ & Yes & return value: $1$
 \end{tabular}
 
-Run with the same test cases as before, and we see that the return values of
-$geq$ in the fifth and sixth table entry are now correct when compared with
-$a\geq b$.
+Run with the same test cases as before, we see that the return values of $geq$
+in the fifth and sixth table entry are now correct when compared with $a\geq
+b$.
 \section{$a=b$}
 In IJVM, to branch if two values are equal, you push them to the stack,
 subtract them using \texttt{ISUB}, and branch if the result is equal to zero
