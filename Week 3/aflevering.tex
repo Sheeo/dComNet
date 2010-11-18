@@ -42,9 +42,9 @@ title=\lstname,                 % show the filename of files included with \lsti
 \begin{document}
 \maketitle
 \section{Domain of the integers}
-The IJVM machine represents signed integers using 32 bit two's complement.
+The IJVM machine represents signed integers using 32-bit two's complement.
 Thus, the machine is able to represent the signed integers from $-2^{31}$ (the
-binary value $100\dots000_2$) to $2^{31}-1$ (the binary value $011\dots111_2$).
+bit string $100\dots000$) to $2^{31}-1$ (the bit string $011\dots111$).
 \section{\texttt{geq.j}}
 The program \texttt{geq.j} implements the relation $a\geq b$ using integer
 subtraction in the function $geq:B_{32}\times B_{32}\rightarrow \{0,1\}$. This
@@ -180,4 +180,14 @@ ELSE:
 Run with the same test cases as before, and we see that the return values of
 $geq$ in the fifth and sixth table entry are now correct when compared with
 $a\geq b$.
+\section{$a=b$}
+In IJVM, to branch if two values are equal, you push them to the stack,
+subtract them using \texttt{ISUB}, and branch if the result is equal to zero
+using \texttt{IFEQ}.
+
+In this case, overflow doesn't matter, since in two's complement arithmetic, if
+$a\ne b$, then $|isub(a, b)|_2\ne 0$, regardless of overflow.
+
+Likewise, if $a=b$, then $|isub(a, b)|_2=0$. Therefore, when using subtraction
+to check if $a=b$, \texttt{IFEQ} will branch if and only if $a=b$.
 \end{document}
