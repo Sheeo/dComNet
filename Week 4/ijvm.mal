@@ -209,13 +209,53 @@ ishl = 0x78:         # ishl: a << b
 	OPC = OPC >> 1     # 64
 	OPC = OPC >> 1     # 32
 	OPC = H = OPC - 1  # 31
-	OPC = H AND MDR    # 0x3F & b
-	H = TOS            # a
+	OPC = H AND TOS    # 0x3F & b
+	H = MDR            # a
 ishl_while:
-	H = TOS = TOS + H  # a <<= 1
+	H = MDR = MDR + H  # a <<= 1
 	OPC = OPC - 1; if (Z) goto ishl_endwhile; else goto ishl_while  # --b || break
 ishl_endwhile:
-	MDR = TOS; wr      # return a
+	TOS = MDR; wr      # return a
+	goto main
+
+ishr = 0x7A:
+	MAR = SP = SP - 1; rd
+	OPC = 1 << 8       # 256
+	OPC = OPC >> 1     # 128
+	OPC = OPC >> 1     # 64
+	OPC = OPC >> 1     # 32
+	OPC = H = OPC - 1  # 31
+	TOS = H AND TOS    # 0x3F & b
+	N = MDR; if (N) goto ishr_signbit; else goto ishr_branch
+ishr_branch:
+	goto iushr_while
+ishr_signbit:
+	H = 1 << 8
+	H = H >> 1
+	H = H << 8
+	H = H << 8
+	H = H << 8
+ishr_while:
+	MDR = MDR >> 1
+	MDR = MDR OR H
+	TOS = TOS - 1; if (Z) goto ishr_endwhile; else goto ishr_while # --b || break
+ishr_endwhile:
+	TOS = MDR; wr	
+	goto main
+
+iushr = 0x7C:				# iushr: a >> b, logical
+	MAR = SP = SP - 1; rd
+	OPC = 1 << 8       # 256
+	OPC = OPC >> 1     # 128
+	OPC = OPC >> 1     # 64
+	OPC = OPC >> 1     # 32
+	OPC = H = OPC - 1  # 31
+	TOS = H AND TOS    # 0x3F & b
+iushr_while:
+	MDR = MDR >> 1
+	TOS = TOS - 1; if (Z) goto iushr_endwhile; else goto iushr_while # --b || break
+iushr_endwhile:
+	TOS = MDR; wr	
 	goto main
 
 mic1_exit:
