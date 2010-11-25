@@ -202,5 +202,21 @@ ireturn = 0xAC:
 	MDR = TOS; wr
 	Z = PC - 1; if (Z) goto mic1_exit; else goto main
 
+ishl = 0x78:         # ishl: a << b
+	MAR = SP = SP - 1; rd
+	OPC = 1 << 8       # 256
+	OPC = OPC >> 1     # 128
+	OPC = OPC >> 1     # 64
+	OPC = OPC >> 1     # 32
+	OPC = H = OPC - 1  # 31
+	OPC = H AND MDR    # 0x3F & b
+	H = TOS            # a
+ishl_while:
+	H = TOS = TOS + H  # a <<= 1
+	OPC = OPC - 1; if (Z) goto ishl_endwhile; else goto ishl_while  # --b || break
+ishl_endwhile:
+	MDR = TOS; wr      # return a
+	goto main
+
 mic1_exit:
 	halt

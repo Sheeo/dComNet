@@ -10,4 +10,4 @@ test.bc: test.j
 	ijvm-asm test.j test.bc
 
 test.trace: test.bc ijvm.mic1
-	mic1 ijvm.mic1 test.bc > test.trace
+	mic1 ijvm.mic1 test.bc | tee test.trace
