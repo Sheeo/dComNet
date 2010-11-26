@@ -1,26 +1,32 @@
 require 'rubygems'
 require 'sinatra'
 
+texfiles = ['./Week 1/imul/aflevering.tex',
+            './Week 2/aflevering.tex',
+            './Week 3/aflevering.tex',
+            './Week 4/aflevering.tex']
 
 get '/' do
   ob = ""
-  Dir.new('.').entries.each do |dir|
-    ob += haml "%a{'href' => '#{dir}'} #{dir}" unless dir =~ /\.|\.\./
+  texfiles.each do |file|
+    ob += haml "%a{'href' => '/pdf/#{file}'} #{file}"
   end 
   ob
 end
 
-get '/:week' do |week|
-  tex = File.new("./#{week.chomp}/aflevering.tex")
+get '/pdf/*' do
+  tex = params[:splat].first
+
   if(File.exists?(tex))
-    pdf = File.new("./#{week}/aflevering.pdf") if File.exist?("./#{week}/aflevering.pdf")
-    cmd = "pdflatex -halt-on-error -output-directory=\"#{week}\" \"#{tex.path}\""
+    tex = File.new(tex)
+    cmd = "pdflatex -halt-on-error -output-directory=\"#{File.dirname(tex)}\" \"#{tex.path}\""
+    pdf = "./#{File.dirname(tex)}/#{File.basename(tex, ".tex")}.pdf"
     puts "command: #{cmd}"
-    puts `#{cmd}` if pdf.nil? || File::ctime(pdf) < File::ctime(tex)
+    puts `#{cmd}` if File.new(pdf).nil? || File::ctime(pdf) < File::ctime(tex)
     [200,
       {'Content-Type' => 'application/pdf'},
-      File.read("./#{week}/aflevering.pdf")] if File.exists?("./#{week}/aflevering.pdf")
+      File.read(pdf)] if File.exists?(pdf)
   else
-    404
+    [404, "Error'd"]
   end
 end
