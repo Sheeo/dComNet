@@ -1,0 +1,9 @@
+!!! 5
+%html
+  %head
+    %title dComNet-afleveringer
+  %body
+    %ul
+    -files.each do |f|
+      %li
+        %a{'href'=> "/pdf/#{f}"}=f
