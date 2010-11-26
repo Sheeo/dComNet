@@ -7,11 +7,7 @@ texfiles = ['./Week 1/imul/aflevering.tex',
             './Week 4/aflevering.tex']
 
 get '/' do
-  ob = ""
-  texfiles.each do |file|
-    ob += haml "%a{'href' => '/pdf/#{file}'} #{file}"
-  end 
-  ob
+  haml :index, :locals => {:files => texfiles}
 end
 
 get '/pdf/*' do
