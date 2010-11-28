@@ -224,7 +224,7 @@ ishr = 0x7A:
 	OPC = OPC >> 1     # 128
 	OPC = OPC >> 1     # 64
 	OPC = OPC >> 1     # 32
-	OPC = H = OPC - 1  # 31
+	H = OPC - 1  # 31
 	TOS = H AND TOS    # 0x3F & b
 	N = MDR; if (N) goto ishr_signbit; else goto ishr_branch
 ishr_branch:
@@ -237,7 +237,7 @@ ishr_signbit:
 	H = H << 8
 ishr_while:
 	MDR = MDR >> 1
-	MDR = MDR OR H
+	MDR = MDR OR H # if the ALU does logical shift, add a sign bit to make this arithmetic
 	TOS = TOS - 1; if (Z) goto ishr_endwhile; else goto ishr_while # --b || break
 ishr_endwhile:
 	TOS = MDR; wr	
@@ -249,10 +249,18 @@ iushr = 0x7C:				# iushr: a >> b, logical
 	OPC = OPC >> 1     # 128
 	OPC = OPC >> 1     # 64
 	OPC = OPC >> 1     # 32
-	OPC = H = OPC - 1  # 31
+	H = OPC - 1  # 31
 	TOS = H AND TOS    # 0x3F & b
+iushr_signbit:
+	OPC = 1 << 8
+	OPC = OPC >> 1
+	OPC = OPC << 8
+	OPC = OPC << 8
+	OPC = OPC << 8
+	H = OPC - 1
 iushr_while:
 	MDR = MDR >> 1
+	MDR = MDR AND H # if the ALU does arithmetic shift, remove the sign bit to make this logical
 	TOS = TOS - 1; if (Z) goto iushr_endwhile; else goto iushr_while # --b || break
 iushr_endwhile:
 	TOS = MDR; wr	
