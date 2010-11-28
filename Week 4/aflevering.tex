@@ -114,58 +114,94 @@ Finally, we have tested the opcodes using the following test program:
 \begin{lstlisting}
 .method main
 .args 1
+
+//------------------------
+// test normal circumstances
+
+// ishl(4,5) = 4 << 5 = 2^7 = 128
 bipush 4
 bipush 5
-ishl      // 4 << 5 = 2^7 = 128
+ishl
 pop
 
+// iushr(120,3) = 120 >> 3 = 15
 bipush 120
 bipush 3
-iushr     // 120 >> 3 = 0b01111000 >> 3 = 0b0001111 = 15
+iushr
 pop
+
+// iushr(-4,1) = 0b1111...1100 >> 1 = 0b0111...1110 = 2
 bipush -4
 bipush 1
 iushr
-// logical (unsigned) shift: -4 >> 1 = 0b1111...1100 >> 1 = 0b0111...1110 = 2^32-2
 pop
+
+// ishr(-4,1) = -4 >> 1 = -2
 bipush -4
 bipush 1
 ishr
-// arithmetic (signed) shift: -4 >> 1 = 0b1111...1100 >> 1 = 0b1111...1110 = -2
 pop
+
+// ishr(5,2) = 5 >> 2 = 1
 bipush 5
 bipush 2
 ishr      // 5 >> 2 = 0b101 >> 2 = 0b001 = 1
+pop
+
+//------------------------
+// test edge cases
+
+// ishl(55,99) = 55 >> (99 & 31) = 55 >> 3 = 0b00110111 >> 3 = 0b00000110 = 6
+bipush 55
+bipush 99
+ishr
+pop
+
+// ishl and overflow
+// operand: 0b1111 1111 0000 1111 1111 0000 0000 0000
+ldc_w -0x00F01000 // 0xFF0FF000
+bipush 42
+// result (trunc): 0b(11 1111 1100) 0011 1111 1100 0000 0000 0000 0000 0000
+// = 0x3FC00000
+ishl
 ireturn
 \end{lstlisting}
 Compiling \ijvmmal{} using \texttt{mic1-asm} and running with \texttt{mic1}
 yields the following trace:
 \begin{lstlisting}
-Mic1 Trace of ijvm.mic1 with test.bc Sun Nov 28 18:07:23 2010
+Mic1 Trace of ijvm.mic1 with test.bc Sun Nov 28 23:23:01 2010
 
-                                stack = 0, 1, 11
-bipush 4            [10 04]     stack = 4, 0, 1, 11
-bipush 5            [10 05]     stack = 5, 4, 0, 1, 11
-ishl                [78]        stack = 128, 0, 1, 11
-pop                 [57]        stack = 0, 1, 11
-bipush 120          [10 78]     stack = 120, 0, 1, 11
-bipush 3            [10 03]     stack = 3, 120, 0, 1, 11
-iushr               [7c]        stack = 15, 0, 1, 11
-pop                 [57]        stack = 0, 1, 11
-bipush -4           [10 fc]     stack = -4, 0, 1, 11
-bipush 1            [10 01]     stack = 1, -4, 0, 1, 11
-iushr               [7c]        stack = 2147483646, 0, 1, 11
-pop                 [57]        stack = 0, 1, 11
-bipush -4           [10 fc]     stack = -4, 0, 1, 11
-bipush 1            [10 01]     stack = 1, -4, 0, 1, 11
-ishr                [7a]        stack = -2, 0, 1, 11
-pop                 [57]        stack = 0, 1, 11
-bipush 5            [10 05]     stack = 5, 0, 1, 11
-bipush 2            [10 02]     stack = 2, 5, 0, 1, 11
-ishr                [7a]        stack = 1, 0, 1, 11
-ireturn             [ac]        stack = 1
-return value: 1
+                                stack = 0, 1, 15
+bipush 4            [10 04]     stack = 4, 0, 1, 15
+bipush 5            [10 05]     stack = 5, 4, 0, 1, 15
+ishl                [78]        stack = 128, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+bipush 120          [10 78]     stack = 120, 0, 1, 15
+bipush 3            [10 03]     stack = 3, 120, 0, 1, 15
+iushr               [7c]        stack = 15, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+bipush -4           [10 fc]     stack = -4, 0, 1, 15
+bipush 1            [10 01]     stack = 1, -4, 0, 1, 15
+iushr               [7c]        stack = 2147483646, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+bipush -4           [10 fc]     stack = -4, 0, 1, 15
+bipush 1            [10 01]     stack = 1, -4, 0, 1, 15
+ishr                [7a]        stack = -2, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+bipush 5            [10 05]     stack = 5, 0, 1, 15
+bipush 2            [10 02]     stack = 2, 5, 0, 1, 15
+ishr                [7a]        stack = 1, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+bipush 55           [10 37]     stack = 55, 0, 1, 15
+bipush 99           [10 63]     stack = 99, 55, 0, 1, 15
+ishr                [7a]        stack = 6, 0, 1, 15
+pop                 [57]        stack = 0, 1, 15
+ldc_w 1             [13 00 01]  stack = -15732736, 0, 1, 15
+bipush 42           [10 2a]     stack = 42, -15732736, 0, 1, 15
+ishl                [78]        stack = 1069547520, 0, 1, 15
+ireturn             [ac]        stack = 1069547520
+return value: 1069547520
 \end{lstlisting}
 Notice the top of stack right after the calls to opcodes \ishl, \iushr{} and
-\ishr: They are $128$, $15$, $2^{32}-2$, $-2$ and $1$ just as expected.
+\ishr: They are $128$, $15$, $2^{32}-2$, $-2$, $1$, $6$ and \texttt{0x3FC00000} just as expected.
 \end{document}

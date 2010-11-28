@@ -1,5 +1,7 @@
 .method main
 .args 1
+
+//------------------------
 // test normal circumstances
 
 // ishl(4,5) = 4 << 5 = 2^7 = 128
@@ -32,9 +34,20 @@
 	ishr      // 5 >> 2 = 0b101 >> 2 = 0b001 = 1
 	pop
 
+//------------------------
 // test edge cases
+
 // ishl(55,99) = 55 >> (99 & 31) = 55 >> 3 = 0b00110111 >> 3 = 0b00000110 = 6
 	bipush 55
 	bipush 99
 	ishr
+	pop
+
+// ishl and overflow
+	// operand: 0b1111 1111 0000 1111 1111 0000 0000 0000
+	ldc_w -0x00F01000 // 0xFF0FF000
+	bipush 42
+	// result (trunc): 0b(11 1111 1100) 0011 1111 1100 0000 0000 0000 0000 0000
+	// = 0x3FC00000
+	ishl
 	ireturn
