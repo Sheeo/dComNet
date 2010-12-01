@@ -1,4 +1,4 @@
-all: cfib.s cfib
+all: cfib.s cfib afib.o afib
 
 cfib.s: cfib.c
 	gcc -nostdlib -S -o $@ $<
@@ -6,5 +6,12 @@ cfib.s: cfib.c
 cfib: cfib.c
 	gcc -nostdlib -o $@ $<
 
-test: cfib
+afib.o: afib.s
+	as --32 -g -o $@ $<
+
+afib: afib.o
+	ld -melf_i386 -o $@ $<
+
+test: cfib afib
 	./cfib; echo $$?
+	./afib; echo $$?

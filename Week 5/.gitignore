@@ -1,2 +1,4 @@
 cfib
 cfib.s
+afib
+afib.o
