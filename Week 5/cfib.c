@@ -4,11 +4,12 @@ int fib(int n) {
 }
 void _start() {
 	int val = fib(5);
-	asm("movl %0, %%ebx\n\t"
-			"movl $1, %%eax\n\t"
-			"int $0x80"
-			: // output (none)
-			: "r" ( val ) // input
-			: "%eax", "%ebx" // clobbered
-			);
+	asm("movl %0, %%ebx\n\t" // return value
+	    "movl $1, %%eax\n\t" // opcode for exit
+	    "int $0x80"
+
+	    : // output (none)
+	    : "r" ( val ) // input
+	    : "%eax", "%ebx" // clobbered
+	    );
 }
