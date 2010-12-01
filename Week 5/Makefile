@@ -15,3 +15,6 @@ afib: afib.o
 test: cfib afib
 	./cfib; echo $$?
 	./afib; echo $$?
+
+clean:
+	rm -fv cfib.s cfib afib.o afib
