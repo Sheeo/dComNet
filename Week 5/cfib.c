@@ -3,7 +3,7 @@ int fib(int n) {
 	return fib(n-2)+fib(n-1);
 }
 void _start() {
-	int val = fib(5);
+	int val = fib(10);
 	asm("movl %0, %%ebx\n\t" // return value
 	    "movl $1, %%eax\n\t" // opcode for exit
 	    "int $0x80"
