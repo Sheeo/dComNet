@@ -1,7 +1,7 @@
 .section .data
-n: .long 10
-intfmt: .string "%d\n\0"
-usagefmt: .string "Usage: %s <n>\n"
+	n: .long 10
+	intfmt: .string "%d\n\0"
+	usagefmt: .string "Usage: %s <n>\n"
 
 
 .section .text
