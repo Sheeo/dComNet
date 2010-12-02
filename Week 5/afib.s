@@ -12,19 +12,20 @@ _start:
 	pushl 12(%ebp)
 	call atoi
 	addl $4, %esp
-	pushl $0
-	pushl %eax
-	pushl $intfmt
-	call printf
-	addl $8, %esp
 
-	pushl n          # push param
+	pushl %eax       # push param
 	call fib         # fib()
 	addl $4, %esp    # pop param
 
-	movl %eax, %ebx  # use ret val as exit code
+	pushl $0
+	pushl %eax
+	pushl $intfmt
+	call printf      # printf("%d\n", fib(n));
+	addl $8, %esp
+
+	movl $0, %ebx    # return value 0
 	movl $1, %eax    # opcode for exiting
-	int $0x80
+	int $0x80        # syscall
 
 
 fib:               # fib(int n)
