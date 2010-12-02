@@ -5,7 +5,8 @@ int fib(int n) {
 }
 void _start(char *argv0, char *argv1) {
 	int n, val;
-	n = atoi(argv1);
+	char *s;
+	n = strtol(argv1, &s, 0);
 	val = fib(n);
 	printf("%d\n", val);
 	asm("movl $0, %ebx\n\t" // return value
