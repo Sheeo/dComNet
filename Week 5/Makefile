@@ -13,7 +13,7 @@ afib: afib.o
 	ld -melf_i386 -o $@ $<
 
 test: cfib afib
-	./cfib; echo $$?
+	./cfib 10
 	./afib; echo $$?
 
 clean:
