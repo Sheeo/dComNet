@@ -19,9 +19,8 @@ fib:               # fib(int n)
 	pushl %ebp       # add prev stack base to stack
 	movl %esp, %ebp  # set stack base to cur stack pt
 
-	movl 8(%ebp), %eax  # read n into eax
 	movl $2, %ebx    # read 2 into ebx
-	cmpl %eax, %ebx  # n <=> 2
+	cmpl 8(%ebp), %ebx  # n <=> 2
 	jg ret           # return n if n < 2
 
 	movl 8(%ebp), %eax
