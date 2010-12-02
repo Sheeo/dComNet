@@ -9,9 +9,16 @@ intfmt: .string "%d\n\0"
 _start:
 	pushl %ebp
 	movl %esp, %ebp
-	pushl 12(%ebp)
-	call atoi
-	addl $4, %esp
+	subl $8, %esp    # place for local variables
+
+	pushl $0         # strtol(argv[1], &lv0, 0)
+	movl %ebp, %eax
+	subl $4, %eax
+	pushl %eax       # &lv0
+	pushl 12(%ebp)   # argv[0]
+	call strtol      # strtol()
+	addl $12, %esp
+	movl %eax, -8(%ebp) # store ret val in lv1
 
 	pushl %eax       # push param
 	call fib         # fib()
@@ -21,7 +28,7 @@ _start:
 	pushl %eax
 	pushl $intfmt
 	call printf      # printf("%d\n", fib(n));
-	addl $8, %esp
+	addl $12, %esp
 
 	movl $0, %ebx    # return value 0
 	movl $1, %eax    # opcode for exiting
