@@ -1,11 +1,23 @@
 .section .data
 n: .long 10
+intfmt: .string "%d\n\0"
 
 
 .section .text
 .globl _start
 
 _start:
+	pushl %ebp
+	movl %esp, %ebp
+	pushl 12(%ebp)
+	call atoi
+	addl $4, %esp
+	pushl $0
+	pushl %eax
+	pushl $intfmt
+	call printf
+	addl $8, %esp
+
 	pushl n          # push param
 	call fib         # fib()
 	addl $4, %esp    # pop param
