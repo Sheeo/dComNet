@@ -13,7 +13,7 @@ _start:
 	subl $8, %esp       # place for local variables
 
 	xor %eax, %eax
-	cmp %eax, 12(%ebp)   # argc <=> 1
+	cmpl %eax, 12(%ebp) # argc <=> 1
 	je usage
 
 	pushl $0            # strtol(argv[1], &lv0, 0)
@@ -25,10 +25,10 @@ _start:
 	addl $12, %esp
 	movl %eax, -8(%ebp) # store ret val in lv1
 
-	xor %ebx, %ebx
-	movl -4(%ebp), %eax
-	movzbl (%eax), %eax
-	cmp %ebx, %eax      # *lv0 <=> 0
+	xor %ebx, %ebx      # ebx = 0
+	movl -4(%ebp), %eax # read the (char *)
+	movzbl (%eax), %eax # read the (char)
+	cmpl %ebx, %eax     # *lv0 <=> 0
 	jne usage
 
 	pushl -8(%ebp)      # push param
