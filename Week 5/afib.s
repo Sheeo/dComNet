@@ -1,6 +1,7 @@
 .section .data
 n: .long 10
 intfmt: .string "%d\n\0"
+usagefmt: .string "Usage: %s <n>\n"
 
 
 .section .text
@@ -11,6 +12,10 @@ _start:
 	movl %esp, %ebp
 	subl $8, %esp       # place for local variables
 
+	xor %eax, %eax
+	cmp %eax, 12(%ebp)   # argc <=> 1
+	je usage
+
 	pushl $0            # strtol(argv[1], &lv0, 0)
 	movl %ebp, %eax
 	subl $4, %eax
@@ -20,7 +25,13 @@ _start:
 	addl $12, %esp
 	movl %eax, -8(%ebp) # store ret val in lv1
 
-	pushl %eax          # push param
+	xor %ebx, %ebx
+	movl -4(%ebp), %eax
+	movzbl (%eax), %eax
+	cmp %ebx, %eax      # *lv0 <=> 0
+	jne usage
+
+	pushl -8(%ebp)      # push param
 	call fib            # fib()
 	addl $4, %esp       # pop param
 
@@ -31,6 +42,17 @@ _start:
 	addl $12, %esp
 
 	movl $0, %ebx       # return value 0
+	movl $1, %eax       # opcode for exiting
+	int $0x80           # syscall
+
+
+usage:
+	pushl $0
+	pushl 8(%ebp)
+	pushl $usagefmt
+	call printf
+
+	movl $1, %ebx       # return value
 	movl $1, %eax       # opcode for exiting
 	int $0x80           # syscall
 

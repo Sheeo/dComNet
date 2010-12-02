@@ -10,7 +10,7 @@ afib.o: afib.s
 	as -g -o $@ $<
 
 afib: afib.o
-	gcc -nostartfiles -o $@ $<
+	gcc -g -nostartfiles -o $@ $<
 
 test: cfib afib
 	./cfib 10
