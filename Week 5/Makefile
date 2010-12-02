@@ -4,7 +4,7 @@ cfib.s: cfib.c
 	gcc -nostdlib -S -o $@ $<
 
 cfib: cfib.c
-	gcc -nostdlib -o $@ $<
+	gcc -nostdlib -g -lc -o $@ $<
 
 afib.o: afib.s
 	as --32 -g -o $@ $<
