@@ -16,5 +16,8 @@ test: cfib afib
 	./cfib 10
 	./afib 10
 
+pdf:
+	pdflatex aflevering.tex aflevering.pdf
+
 clean:
 	rm -fv cfib.s cfib afib.o afib

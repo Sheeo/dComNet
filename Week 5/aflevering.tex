@@ -1,0 +1,75 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage{color}
+\lstloadlanguages{C,sh,JVMIS}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0.1in}
+
+\newcommand{\ishl}{\texttt{ishl}}
+\newcommand{\ishr}{\texttt{ishr}}
+\newcommand{\iushr}{\texttt{iushr}}
+\newcommand{\ijvm}{\textsc{ijvm}}
+\newcommand{\ijvmmal}{\texttt{ijvm.mal}}
+\newcommand{\ijvmspec}{\texttt{ijvm.spec}}
+
+\newtheorem{theorem}{Sætning}
+
+\lstset{ %
+language=java,
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line 
+                                % will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+tabsize=2,	          	        % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+}
+
+
+\title{Computers and Networks (Q2/2010)}
+\author{Mathias Rav, 20103940 \\
+		Michael Søndergaard, 20104223 \\
+		DAT-3}
+\date{Week 5, December 5, 2010}
+
+\begin{document}
+\maketitle
+
+\section{Recursive fibonacci in IA-32}
+We've realised the fibonacci-program afib.s in IA-32 symbolic machine-language as such:
+
+\lstinputlisting{afib.s}
+
+We have commented the sourcecode as to explain what happens where, but for reference:
+
+Etablish stack: line \texttt{61} \\
+Transfer parameters: line \texttt{70} \\
+Make space for local variables: line \texttt{13} \\
+Return values: lines \texttt{74} and \texttt{83} \\
+Tear down stack: line \texttt{86} \\
+
+When run with n=5, the program returns the following output:
+\lstset{numbers=none}
+\begin{lstlisting}
+$ ./cfib 5  
+5
+\end{lstlisting}
+
+During execution of the fib-assembly call with $n=4$, the stack is as follows:
+
+
+The results are as expected.
+
+\end{document}

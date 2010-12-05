@@ -4,7 +4,8 @@ require 'sinatra'
 texfiles = ['./Week 1/imul/aflevering.tex',
   './Week 2/aflevering.tex',
   './Week 3/aflevering.tex',
-  './Week 4/aflevering.tex']
+  './Week 4/aflevering.tex',
+  './Week 5/aflevering.tex']
 
 get '/' do
   haml :index, :locals => {:files => texfiles}
