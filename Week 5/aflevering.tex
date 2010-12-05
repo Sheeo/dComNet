@@ -4,6 +4,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{tabularx}
 \setlength{\parindent}{0in}
 \setlength{\parskip}{0.1in}
 
@@ -72,7 +73,7 @@ In afib.s:51, \_start calling fib(4), \\
    \vdots
 \\
 
-\begin{tabular}{l l}
+\begin{tabularx}{\textwidth}{XX}
 argv[2] &                              \\
 argv[1] &  2nd argument (n)            \\
 argv[0] &  1st argument (program name) \\
@@ -92,8 +93,8 @@ old ebp &  ebp of fib(2)               \\
 1       &  1st argument to fib         \\
 old eip &                              \\
 old ebp &  ebp of fib(1)               \\
-\end{tabular}
+\end{tabularx}
 
-The results are as expected.
+The contents of the stack are as expected.
 
 \end{document}
