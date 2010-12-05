@@ -47,22 +47,29 @@ title=\lstname,                 % show the filename of files included with \lsti
 \begin{document}
 \maketitle
 
+\section{Recursive fibonacci in IA-32}
 We've realised the fibonacci-program afib.s in IA-32 symbolic machine-language as such:
 
 \lstinputlisting{afib.s}
 
-Beskriv (med henvisning til linienumere i koden eller ved at vise udvalgte kodefragmenter hvorledes i etablerer stakafsnit, overfører parametre, gør plads til evt. lokale variable,
-returner værdier, samt nedlægger stakafsnit i funktionen fib.
+We have commented the sourcecode as to explain what happens where, but for reference:
 
+Etablish stack: line \texttt{61} \\
+Transfer parameters: line \texttt{70} \\
+Make space for local variables: line \texttt{13} \\
+Return values: lines \texttt{74} and \texttt{83} \\
+Tear down stack: line \texttt{86} \\
 
 When run with n=5, the program returns the following output:
+\lstset{numbers=none}
 \begin{lstlisting}
 $ ./cfib 5  
 5
 \end{lstlisting}
 
 
-Redegør ved brug af passende tegninger for indholdet af stakken ifm. udførslen af kaldet fib(4)
+Redegør ved brug af passende tegninger for indholdet af stakken
+ifm. udførslen af kaldet fib(4)
 
 
 The results are as expected.
