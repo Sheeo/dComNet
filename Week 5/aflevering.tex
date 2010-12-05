@@ -65,6 +65,12 @@ $ ./afib 5
 5
 \end{lstlisting}
 
+In the following stack trace, the higher memory addresses are at the top, and
+the stack grows downwards with decreasing memory addresses. The ``old eip''
+memory cells contain addresses that point into the text section. The ``old
+ebp'' memory cells contain addresses to memory cells above themselves and
+realize the C calling conventions.
+
 \lstinputlisting{trace.txt}
 
 The results are as expected.
