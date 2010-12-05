@@ -13,8 +13,8 @@ _start:
 	subl $8, %esp       # place for local variables
 
 	xor %eax, %eax
-	cmpl %eax, 12(%ebp) # argc <=> 1
-	je usage
+	cmpl %eax, 12(%ebp) # argv[1] <=> 0
+	je usage            # if 1st arg is null, print usage
 
 	pushl $0            # strtol(argv[1], &lv0, 0)
 	movl %ebp, %eax
