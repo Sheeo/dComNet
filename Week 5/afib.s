@@ -1,7 +1,8 @@
 .section .data
 	n: .long 10
-	intfmt: .string "%d\n\0"
+	intfmt: .string "%d\n"
 	usagefmt: .string "Usage: %s <n>\n"
+	scanfmt: .string "%d"
 
 
 .section .text
@@ -14,8 +15,9 @@ _start:
 
 	xor %eax, %eax
 	cmpl %eax, 12(%ebp) # argv[1] <=> 0
-	je usage            # if 1st arg is null, print usage
+	je noargs           # if 1st arg is null, print usage
 
+parsearg:
 	pushl $0            # strtol(argv[1], &lv0, 0)
 	movl %ebp, %eax
 	subl $4, %eax
@@ -29,8 +31,22 @@ _start:
 	movl -4(%ebp), %eax # read the (char *)
 	movzbl (%eax), %eax # read the (char)
 	cmpl %ebx, %eax     # *lv0 <=> 0
-	jne usage
+	jne usage           # jump if arg is not a number
 
+	jmp callfib
+
+noargs:
+	pushl $0            # scanf("%d", &lv1)
+	movl %ebp, %eax
+	subl $8, %eax
+	pushl %eax          # &lv1
+	pushl $scanfmt
+	call scanf
+	addl $3, %esp
+	cmpl $1, %eax
+	jne usage           # jump if scanf didn't parse the input
+
+callfib:
 	pushl -8(%ebp)      # push param
 	call fib            # fib()
 	addl $4, %esp       # pop param
