@@ -65,6 +65,14 @@ $ ./afib 5
 5
 \end{lstlisting}
 
+
+In the following stack trace, the higher memory addresses are at the top, and
+the stack grows downwards with decreasing memory addresses. The ``old eip''
+memory cells contain addresses that point into the text section. The ``old
+ebp'' memory cells contain addresses to memory cells above themselves and
+realize the C calling conventions.
+
+
 Stack trace at the following point:   \\
 In afib.s:51, \_start calling fib(4), \\
    afib.s:87, fib(4) calling fib(3),  \\
@@ -76,25 +84,25 @@ In afib.s:51, \_start calling fib(4), \\
 \\
 
 \begin{tabular}{l r}
-argv[2] & \\
-argv[1] &       2nd argument (n) \\
+argv[2] &                                   \\
+argv[1] &       2nd argument (n)            \\
 argv[0] &       1st argument (program name) \\
-argc    &       argument count \\
-old ebp &       ebp of \_start \\
-loc 1   &       endptr (for strtol) \\
-loc 2   &       n (passed to fib) \\
-4       &       1st argument to fib \\
-old eip & \\
-old ebp &       ebp of fib(4) \\
-3       &       1st argument to fib \\
-old eip & \\
-old ebp &       ebp of fib(3) \\
-2       &       1st argument to fib \\
-old eip & \\
-old ebp &       ebp of fib(2) \\
-1       &       1st argument to fib \\
-old eip &
-old ebp &       ebp of fib(1)
+argc    &       argument count              \\
+old ebp &       ebp of \_start              \\
+loc 1   &       endptr (for strtol)         \\
+loc 2   &       n (passed to fib)           \\
+4       &       1st argument to fib         \\
+old eip &                                   \\
+old ebp &       ebp of fib(4)               \\
+3       &       1st argument to fib         \\
+old eip &                                   \\
+old ebp &       ebp of fib(3)               \\
+2       &       1st argument to fib         \\
+old eip &                                   \\
+old ebp &       ebp of fib(2)               \\
+1       &       1st argument to fib         \\
+old eip &                                   \\
+old ebp &       ebp of fib(1)               \\
 \end{tabular}
 
 The results are as expected.
