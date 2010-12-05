@@ -10,15 +10,18 @@ void _start(char *argv0, char *argv1) {
 	int n, val;
 	char *s;
 	if (argv1 == NULL) {
-		printf("Usage: %s <n>\n", argv0);
-		ret("$1");
-		return;
-	}
-	n = strtol(argv1, &s, 0);
-	if (*s) {
-		printf("Usage: %s <n>\n", argv0);
-		ret("$1");
-		return;
+		if (1 != scanf("%d", &n)) {
+			printf("Usage: %s <n>\n", argv0);
+			ret("$1");
+			return;
+		}
+	} else {
+		n = strtol(argv1, &s, 0);
+		if (*s) {
+			printf("Usage: %s <n>\n", argv0);
+			ret("$1");
+			return;
+		}
 	}
 	val = fib(n);
 	printf("%d\n", val);
