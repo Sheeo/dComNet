@@ -45,29 +45,27 @@ title=\lstname,                 % show the filename of files included with \lsti
 \begin{document}
 \maketitle
 
-\section{Recursive fibonacci in IA-32}
-We've realised the fibonacci-program afib.s in IA-32 symbolic machine-language as such:
+\section{Recursive Fibonacci in IA-32}
+We have realised the Fibonacci algorithm \texttt{afib.s} in IA-32 symbolic machine language as such:
 
 \lstinputlisting{afib.s}
 
-We have commented the sourcecode as to explain what happens where, but for reference:
+We have commented the source code as to explain what happens where, but for reference:
 
-Etablish stack: line \texttt{61} \\
-Transfer parameters: line \texttt{70} \\
-Make space for local variables: line \texttt{13} \\
-Return values: lines \texttt{74} and \texttt{83} \\
-Tear down stack: line \texttt{86} \\
-
+Establish stack: line \texttt{77} \\
+Transfer parameters and recurse: line \texttt{86} \\
+Make space for local variables: line \texttt{13} (in \texttt{\_start} - no locals in \texttt{fib}) \\
+Return values: lines \texttt{90} and \texttt{98} \\
+Tear down stack: lines \texttt{102}-\texttt{103}
 
 When run with $n=5$, the program returns the following output:
 \lstset{numbers=none}
 \begin{lstlisting}
-$ ./cfib 5  
+$ ./afib 5  
 5
 \end{lstlisting}
 
-During execution of the fib-assembly call with $n=4$, the stack is as follows:
-
+\lstinputlisting{trace.txt}
 
 The results are as expected.
 
