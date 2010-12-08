@@ -49,7 +49,7 @@ public class PingClient implements Runnable {
 
 		int seq = 1;
 
-		while (packets-- > 0) {
+		while (true) {
 			byte[] sendData = sendString.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, host, port);
 			try {
@@ -69,6 +69,8 @@ public class PingClient implements Runnable {
 				System.err.println("In receiving ping response from "+hostSig+": "+e);
 			}
 			++seq;
+			--packets;
+			if (packets == 0) break;
 			try {
 				Thread.sleep(DELAY);
 			} catch (InterruptedException e) {
