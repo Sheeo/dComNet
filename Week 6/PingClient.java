@@ -1,4 +1,6 @@
 import java.net.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 
 public class PingClient implements Runnable {
@@ -35,9 +37,7 @@ public class PingClient implements Runnable {
 				return;
 			}
 		}
-		final String sendString = "Ping request";
 		final String hostSig = hostname+" ("+host+")";
-		System.out.println("PING "+hostSig+" "+sendString.length()+" characters of data.");
 
 		try {
 			socket = new DatagramSocket();
@@ -50,8 +50,11 @@ public class PingClient implements Runnable {
 		int seq = 1;
 
 		while (true) {
+			String sendString = generateSendString(seq);
 			byte[] sendData = sendString.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, host, port);
+			long sendTime = System.nanoTime();
+			long ping;
 			try {
 				socket.send(sendPacket);
 			} catch (IOException e) {
@@ -62,7 +65,8 @@ public class PingClient implements Runnable {
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			try {
 				socket.receive(receivePacket);
-				System.out.println(receiveData.length+" bytes from "+hostSig+": icmp_seq="+seq+"");
+				ping = System.nanoTime()-sendTime;
+				System.out.println(receiveData.length+" bytes from "+hostSig+": ping_seq="+seq+" time="+ping+"ns");
 			} catch (SocketTimeoutException e) {
 				System.out.println("Timeout from "+hostSig);
 			} catch (IOException e) {
@@ -77,5 +81,15 @@ public class PingClient implements Runnable {
 				System.err.println("Grr, my beauty sleep!");
 			}
 		}
+	}
+
+	private static String generateSendString(int seq) {
+		StringBuffer buf = new StringBuffer("PING ");
+		buf.append(seq);
+		buf.append(' ');
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		buf.append(fmt.format(new Date()));
+		buf.append('\n');
+		return buf.toString();
 	}
 }
