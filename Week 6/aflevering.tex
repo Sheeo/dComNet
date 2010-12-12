@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{multicol}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{0.1in}
+
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers.
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+tabsize=2,	          	        % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+
+\title{Computers and Networks (Q2/2010)}
+\author{Mathias Rav, 20103940 \\
+        Michael Søndergaard, 20104223 \\
+        DAT-3}
+\date{Week 6, December 12, 2010}
+
+\begin{document}
+\maketitle
+
+\section{UDP ping implementation}
+The class \texttt{PingClient} has been implemented in the following file, \texttt{PingClient.java}:
+
+\lstinputlisting[language=java]{PingClient.java}
+
+A socket is opened in the \texttt{PingClient.run()} method in line 43. In line
+44, we set the \texttt{receive()} timeout to 1000 milliseconds.
+
+A ping request packet is formed in lines 53-55 and it is sent in line 59. Then,
+we prepare an object in which the ping response is stored (lines 64-65), and we
+wait for a server response in lines 66-74. If the server doesn't respond,
+\texttt{receive()} wakes up and throws a \texttt{SocketTimeoutException}, which
+we catch and handle in line 71. Otherwise, we calculate the time taken and
+print out the size of the received packet in lines 68-69.
+
+\subsection{Program output}
+
+Launching a \texttt{PingServer} on the machine named \texttt{camel15}, port
+8085, and launching a \texttt{PingClient} on the machine named
+\texttt{camel08}, specifying destination hostname \texttt{camel15} and
+destination port 8085, we get the following output:
+
+\subsubsection{Server output}
+\begin{lstlisting}[]
+$ java PingServer 8085
+Received from 130.225.16.127: PING 1 2010-12-12T15:03:03.756+0100
+	Reply sent.
+Received from 130.225.16.127: PING 2 2010-12-12T15:03:04.816+0100
+	Reply sent.
+Received from 130.225.16.127: PING 3 2010-12-12T15:03:05.871+0100
+	Reply sent.
+Received from 130.225.16.127: PING 4 2010-12-12T15:03:06.938+0100
+	Reply sent.
+Received from 130.225.16.127: PING 5 2010-12-12T15:03:08.055+0100
+	Reply not sent.
+\end{lstlisting}
+\subsubsection{Client output}
+\begin{lstlisting}[]
+$ java PingClient camel15 8085
+1024 bytes from camel15 (camel15/130.225.16.134): ping_seq=1 time=47960027ns
+1024 bytes from camel15 (camel15/130.225.16.134): ping_seq=2 time=53758746ns
+1024 bytes from camel15 (camel15/130.225.16.134): ping_seq=3 time=63897344ns
+1024 bytes from camel15 (camel15/130.225.16.134): ping_seq=4 time=114912574ns
+Timeout from camel15 (camel15/130.225.16.134)
+\end{lstlisting}
+The first four packets from the client get the appropriate attention from the
+server, and for the fifth packet, the server simulates packet loss by
+disregarding the request.
+\end{document}
